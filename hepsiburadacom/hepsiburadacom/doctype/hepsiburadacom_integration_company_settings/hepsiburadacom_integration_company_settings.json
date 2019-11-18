@@ -1,15 +1,23 @@
 {
+  "autoname": "field:company",
   "creation": "2019-11-18 23:40:30.295654",
   "doctype": "DocType",
   "editable_grid": 1,
   "engine": "InnoDB",
   "field_order": [
+    "enable",
     "company",
     "integration_warehouse",
     "integration_section",
     "username",
     "password",
-    "merchantid"
+    "merchantid",
+    "integration_check_section",
+    "check_integration",
+    "integration_result",
+    "column_break_11",
+    "check_testintegration",
+    "testintegration_result"
   ],
   "fields": [
     {
@@ -44,9 +52,46 @@
       "fieldname": "merchantid",
       "fieldtype": "Data",
       "label": "Merchant ID"
+    },
+    {
+      "default": "0",
+      "fieldname": "enable",
+      "fieldtype": "Check",
+      "label": "Enable"
+    },
+    {
+      "fieldname": "integration_check_section",
+      "fieldtype": "Section Break",
+      "label": "Integration Check"
+    },
+    {
+      "fieldname": "check_integration",
+      "fieldtype": "Button",
+      "label": "Check Integration"
+    },
+    {
+      "fieldname": "integration_result",
+      "fieldtype": "Small Text",
+      "label": "Integration Result",
+      "read_only": 1
+    },
+    {
+      "fieldname": "column_break_11",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "check_testintegration",
+      "fieldtype": "Button",
+      "label": "Check Test Integration"
+    },
+    {
+      "fieldname": "testintegration_result",
+      "fieldtype": "Data",
+      "label": "Test Integration Result",
+      "read_only": 1
     }
   ],
-  "modified": "2019-11-18 23:40:30.295654",
+  "modified": "2019-11-19 00:00:14.882918",
   "modified_by": "Administrator",
   "module": "Hepsiburadacom",
   "name": "hepsiburadacom Integration Company Settings",
@@ -63,6 +108,15 @@
       "role": "System Manager",
       "share": 1,
       "write": 1
+    },
+    {
+      "email": 1,
+      "export": 1,
+      "print": 1,
+      "read": 1,
+      "report": 1,
+      "role": "All",
+      "share": 1
     }
   ],
   "quick_entry": 1,
