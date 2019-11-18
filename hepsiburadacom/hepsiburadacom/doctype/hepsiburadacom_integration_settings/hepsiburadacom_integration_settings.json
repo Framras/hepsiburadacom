@@ -1,0 +1,95 @@
+{
+  "creation": "2019-11-18 20:34:38.267097",
+  "doctype": "DocType",
+  "editable_grid": 1,
+  "engine": "InnoDB",
+  "field_order": [
+    "contenttype",
+    "listintegration_section",
+    "list_host",
+    "column_break_5",
+    "list_testhost",
+    "orderintegration_section",
+    "order_host",
+    "column_break_11",
+    "order_testhost",
+    "financeintegration_section",
+    "finance_host"
+  ],
+  "fields": [
+    {
+      "fieldname": "contenttype",
+      "fieldtype": "Data",
+      "label": "Content Type"
+    },
+    {
+      "fieldname": "listintegration_section",
+      "fieldtype": "Section Break",
+      "label": "List Integration"
+    },
+    {
+      "fieldname": "list_host",
+      "fieldtype": "Data",
+      "label": "Host"
+    },
+    {
+      "fieldname": "column_break_5",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "list_testhost",
+      "fieldtype": "Data",
+      "label": "Test Host"
+    },
+    {
+      "fieldname": "orderintegration_section",
+      "fieldtype": "Section Break",
+      "label": "Order Integration"
+    },
+    {
+      "fieldname": "order_host",
+      "fieldtype": "Data",
+      "label": "Host"
+    },
+    {
+      "fieldname": "column_break_11",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "order_testhost",
+      "fieldtype": "Data",
+      "label": "Test Host"
+    },
+    {
+      "fieldname": "financeintegration_section",
+      "fieldtype": "Section Break",
+      "label": "Finance Integration"
+    },
+    {
+      "fieldname": "finance_host",
+      "fieldtype": "Data",
+      "label": "Host"
+    }
+  ],
+  "issingle": 1,
+  "modified": "2019-11-18 23:35:26.478395",
+  "modified_by": "Administrator",
+  "module": "Hepsiburadacom",
+  "name": "hepsiburadacom Integration Settings",
+  "owner": "tufan.kaynak@framras.com",
+  "permissions": [
+    {
+      "create": 1,
+      "delete": 1,
+      "email": 1,
+      "print": 1,
+      "read": 1,
+      "role": "System Manager",
+      "share": 1,
+      "write": 1
+    }
+  ],
+  "sort_field": "modified",
+  "sort_order": "DESC",
+  "track_changes": 1
+}
