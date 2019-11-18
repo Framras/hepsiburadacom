@@ -1,0 +1,18 @@
+include MANIFEST.in
+include requirements.txt
+include *.json
+include *.md
+include *.py
+include *.txt
+recursive-include hepsiburadacom *.css
+recursive-include hepsiburadacom *.csv
+recursive-include hepsiburadacom *.html
+recursive-include hepsiburadacom *.ico
+recursive-include hepsiburadacom *.js
+recursive-include hepsiburadacom *.json
+recursive-include hepsiburadacom *.md
+recursive-include hepsiburadacom *.png
+recursive-include hepsiburadacom *.py
+recursive-include hepsiburadacom *.svg
+recursive-include hepsiburadacom *.txt
+recursive-exclude hepsiburadacom *.pyc
