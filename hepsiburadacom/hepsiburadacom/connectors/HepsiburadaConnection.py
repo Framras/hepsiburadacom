@@ -15,9 +15,9 @@ class HepsiburadaConnection:
             password = frappe.db.get_value("hepsiburadacom Integration Company Settings", company, "password")
 
             if frappe.db.get_value("hepsiburadacom Integration Company Settings", company, "usetest") == 0:
-                serviceurl = frappe.db.get_single_value("hepsiburadacom Integration Settings", "listhost")
+                serviceurl = frappe.db.get_single_value("hepsiburadacom Integration Settings", "list_host")
             else:
-                serviceurl = frappe.db.get_single_value("hepsiburadacom Integration Settings", "listtesthost")
+                serviceurl = frappe.db.get_single_value("hepsiburadacom Integration Settings", "list_testhost")
 
             url = serviceurl + service
             # her web servis çağrısının başlık (header) kısmına utsToken etiketiyle sistem token’ının değerini eklemelidir

@@ -6,7 +6,7 @@ frappe.ui.form.on('hepsiburadacom Integration Company Settings', {
 
 	// }
 	check_integration: function(frm){
-	    if(frm.doc.username!="")&&(frm.doc.password!="")&&(frm.doc.merchantid!=""){
+	    if((frm.doc.username!="")&&(frm.doc.password!="")&&(frm.doc.merchantid!="")){
 	        frappe.call({
 	            method: "hepsiburadacom.api.check_integration",
 	            args:{
@@ -16,13 +16,13 @@ frappe.ui.form.on('hepsiburadacom Integration Company Settings', {
                     merchantid: frm.doc.merchantid
 	            },
 	            callback: function(r){
-                    frm.set_value("result", r.message)
+                    frm.set_value("integration_result", r.message)
 	            }
 	        })
 	    }
 	},
 	check_testintegration: function(frm){
-	    if(frm.doc.username!="")&&(frm.doc.password!="")&&(frm.doc.merchantid!=""){
+	    if((frm.doc.username!="")&&(frm.doc.password!="")&&(frm.doc.merchantid!="")){
 	        frappe.call({
 	            method: "hepsiburadacom.api.check_integration",
 	            args:{
@@ -32,7 +32,7 @@ frappe.ui.form.on('hepsiburadacom Integration Company Settings', {
                     merchantid: frm.doc.merchantid
 	            },
 	            callback: function(r){
-                    frm.set_value("result", r.message)
+                    frm.set_value("testintegration_result", r.message)
 	            }
 	        })
 	    }

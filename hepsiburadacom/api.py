@@ -1,4 +1,5 @@
 import frappe
+import json
 import requests
 from requests import HTTPError
 from requests.auth import HTTPBasicAuth
@@ -7,33 +8,34 @@ from requests.auth import HTTPBasicAuth
 @frappe.whitelist()
 def check_integration(system, username, password, merchantid):
     company = frappe.defaults.get_user_default("Company")
-    if frappe.db.get_value("hepsiburadacom Integration Company Settings", company, "usetest") == 0:
-        url = frappe.db.get_single_value("hepsiburadacom Integration Settings", "listhost")
-    else:
-        url = frappe.db.get_single_value("hepsiburadacom Integration Settings", "listtesthost")
-
-    offset = 0
-    limit = 0
     servicemethod = 'GET'
-    serviceprotocol = "https://"
-    servicehost = "listing-external-sit.hepsiburada.com"
-    serviceurl = serviceprotocol + servicehost
+
+    serviceurl = ""
+    if system == "live":
+        serviceurl = frappe.db.get_single_value("hepsiburadacom Integration Settings", "list_host")
+    elif system == "test":
+        serviceurl = frappe.db.get_single_value("hepsiburadacom Integration Settings", "list_testhost")
     serviceendpoint = "/listings/merchantid"
+    serviceresource = "/" + merchantid
 
     headers = {
         'Accept': frappe.db.get_single_value("hepsiburadacom Integration Settings", "contenttype")
     }
-
-    serviceresource = "/" + merchantid
+    params = {
+        'offset': 0,
+        'limit': 1
+    }
 
     servicestatus = ''
     s = requests.Session()
     try:
-        r = s.request(method=servicemethod, url=serviceurl + serviceendpoint + serviceresource, params=,
+        r = s.request(method=servicemethod, url=serviceurl + serviceendpoint + serviceresource, params=params,
                       headers=headers, auth=HTTPBasicAuth(username, password))
         with r:
             servicestatus = r.status_code
+            response = json.loads(r.content)
+            print(json.dumps(response))
     except HTTPError as e:
         return ('The server couldn\'t fulfill the request. ' + 'Error code: ' + str(e.code))
     finally:
-        return (servicestatus + r.content)
+        return (servicestatus)
