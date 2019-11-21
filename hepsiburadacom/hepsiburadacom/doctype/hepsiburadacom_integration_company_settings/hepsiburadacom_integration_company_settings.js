@@ -36,6 +36,13 @@ frappe.ui.form.on('hepsiburadacom Integration Company Settings', {
 	            }
 	        })
 	    }
-	}
-
+	},
+	initiate_listings: function(frm){
+        frappe.call({
+            method: "hepsiburadacom.ListingsService.initiate_hepsiburada_listings",
+            callback: function(r){
+                frm.set_value("testintegration_result", r.message)
+            }
+        })
+    }
 });

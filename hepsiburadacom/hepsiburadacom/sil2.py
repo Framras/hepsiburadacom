@@ -30,7 +30,9 @@ try:
         response = json.loads(r.content)
         print(json.dumps(response))
         for l in response["listings"]:
-            print(l["merchantSku"])
+            print("-------------" + str(l["hepsiburadaSku"]))
+            for p in l.keys():
+                print(str(p).lower() + " " + str(l[p]))
 except HTTPError as e:
     print('The server couldn\'t fulfill the request. ' + 'Error code: ' + str(e.code))
 finally:

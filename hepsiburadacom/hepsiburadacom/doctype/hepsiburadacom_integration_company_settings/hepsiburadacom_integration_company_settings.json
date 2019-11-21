@@ -1,138 +1,150 @@
 {
-  "autoname": "field:company",
-  "creation": "2019-11-18 23:40:30.295654",
-  "doctype": "DocType",
-  "editable_grid": 1,
-  "engine": "InnoDB",
-  "field_order": [
-    "company",
-    "integration_warehouse",
-    "column_break_3",
-    "enable",
-    "usetest",
-    "integration_section",
-    "username",
-    "password",
-    "merchantid",
-    "integration_check_section",
-    "check_integration",
-    "integration_result",
-    "column_break_11",
-    "check_testintegration",
-    "testintegration_result"
-  ],
-  "fields": [
-    {
-      "fieldname": "company",
-      "fieldtype": "Link",
-      "label": "Company",
-      "options": "Company",
-      "unique": 1
-    },
-    {
-      "fieldname": "integration_warehouse",
-      "fieldtype": "Link",
-      "label": "Integration Warehouse",
-      "options": "Warehouse"
-    },
-    {
-      "fieldname": "integration_section",
-      "fieldtype": "Section Break",
-      "label": "Integration Settings"
-    },
-    {
-      "fieldname": "username",
-      "fieldtype": "Data",
-      "label": "User Name"
-    },
-    {
-      "fieldname": "password",
-      "fieldtype": "Data",
-      "label": "Password"
-    },
-    {
-      "fieldname": "merchantid",
-      "fieldtype": "Data",
-      "label": "Merchant ID"
-    },
-    {
-      "default": "0",
-      "fieldname": "enable",
-      "fieldtype": "Check",
-      "label": "Enable"
-    },
-    {
-      "fieldname": "integration_check_section",
-      "fieldtype": "Section Break",
-      "label": "Integration Check"
-    },
-    {
-      "fieldname": "check_integration",
-      "fieldtype": "Button",
-      "label": "Check Integration"
-    },
-    {
-      "fieldname": "integration_result",
-      "fieldtype": "Small Text",
-      "label": "Integration Result",
-      "read_only": 1
-    },
-    {
-      "fieldname": "column_break_11",
-      "fieldtype": "Column Break"
-    },
-    {
-      "fieldname": "check_testintegration",
-      "fieldtype": "Button",
-      "label": "Check Test Integration"
-    },
-    {
-      "fieldname": "testintegration_result",
-      "fieldtype": "Data",
-      "label": "Test Integration Result",
-      "read_only": 1
-    },
-    {
-      "fieldname": "column_break_3",
-      "fieldtype": "Column Break"
-    },
-    {
-      "default": "0",
-      "fieldname": "usetest",
-      "fieldtype": "Check",
-      "label": "Use Test"
-    }
-  ],
-  "modified": "2019-11-21 09:57:55.816838",
-  "modified_by": "Administrator",
-  "module": "Hepsiburadacom",
-  "name": "hepsiburadacom Integration Company Settings",
-  "owner": "Administrator",
-  "permissions": [
-    {
-      "create": 1,
-      "delete": 1,
-      "email": 1,
-      "export": 1,
-      "print": 1,
-      "read": 1,
-      "report": 1,
-      "role": "System Manager",
-      "share": 1,
-      "write": 1
-    },
-    {
-      "email": 1,
-      "export": 1,
-      "print": 1,
-      "read": 1,
-      "report": 1,
-      "role": "All",
-      "share": 1
-    }
-  ],
-  "quick_entry": 1,
-  "sort_field": "modified",
-  "sort_order": "DESC",
-  "track_changes": 1
+ "autoname": "field:company",
+ "creation": "2019-11-18 23:40:30.295654",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "company",
+  "integration_warehouse",
+  "column_break_3",
+  "enable",
+  "usetest",
+  "integration_section",
+  "username",
+  "password",
+  "merchantid",
+  "integration_check_section",
+  "check_integration",
+  "integration_result",
+  "column_break_11",
+  "check_testintegration",
+  "testintegration_result",
+  "initiate_section",
+  "initiate_listings"
+ ],
+ "fields": [
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company",
+   "unique": 1
+  },
+  {
+   "fieldname": "integration_warehouse",
+   "fieldtype": "Link",
+   "label": "Integration Warehouse",
+   "options": "Warehouse"
+  },
+  {
+   "fieldname": "integration_section",
+   "fieldtype": "Section Break",
+   "label": "Integration Settings"
+  },
+  {
+   "fieldname": "username",
+   "fieldtype": "Data",
+   "label": "User Name"
+  },
+  {
+   "fieldname": "password",
+   "fieldtype": "Data",
+   "label": "Password"
+  },
+  {
+   "fieldname": "merchantid",
+   "fieldtype": "Data",
+   "label": "Merchant ID"
+  },
+  {
+   "default": "0",
+   "fieldname": "enable",
+   "fieldtype": "Check",
+   "label": "Enable"
+  },
+  {
+   "fieldname": "integration_check_section",
+   "fieldtype": "Section Break",
+   "label": "Integration Check"
+  },
+  {
+   "fieldname": "check_integration",
+   "fieldtype": "Button",
+   "label": "Check Integration"
+  },
+  {
+   "fieldname": "integration_result",
+   "fieldtype": "Small Text",
+   "label": "Integration Result",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_11",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "check_testintegration",
+   "fieldtype": "Button",
+   "label": "Check Test Integration"
+  },
+  {
+   "fieldname": "testintegration_result",
+   "fieldtype": "Data",
+   "label": "Test Integration Result",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "usetest",
+   "fieldtype": "Check",
+   "label": "Use Test"
+  },
+  {
+   "fieldname": "initiate_section",
+   "fieldtype": "Section Break",
+   "label": "Initiate Integration"
+  },
+  {
+   "fieldname": "initiate_listings",
+   "fieldtype": "Button",
+   "label": "Initiate"
+  }
+ ],
+ "modified": "2019-11-21 19:50:16.918440",
+ "modified_by": "Administrator",
+ "module": "Hepsiburadacom",
+ "name": "hepsiburadacom Integration Company Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "All",
+   "share": 1
+  }
+ ],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
 }
