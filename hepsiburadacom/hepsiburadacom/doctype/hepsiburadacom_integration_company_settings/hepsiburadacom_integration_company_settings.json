@@ -5,9 +5,11 @@
   "editable_grid": 1,
   "engine": "InnoDB",
   "field_order": [
-    "enable",
     "company",
     "integration_warehouse",
+    "column_break_3",
+    "enable",
+    "usetest",
     "integration_section",
     "username",
     "password",
@@ -89,9 +91,19 @@
       "fieldtype": "Data",
       "label": "Test Integration Result",
       "read_only": 1
+    },
+    {
+      "fieldname": "column_break_3",
+      "fieldtype": "Column Break"
+    },
+    {
+      "default": "0",
+      "fieldname": "usetest",
+      "fieldtype": "Check",
+      "label": "Use Test"
     }
   ],
-  "modified": "2019-11-19 00:00:14.882918",
+  "modified": "2019-11-21 09:57:55.816838",
   "modified_by": "Administrator",
   "module": "Hepsiburadacom",
   "name": "hepsiburadacom Integration Company Settings",

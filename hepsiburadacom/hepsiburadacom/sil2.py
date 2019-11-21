@@ -1,28 +1,38 @@
+import json
 import requests
 from requests import HTTPError
 from requests.auth import HTTPBasicAuth
 
+username = 'framras_dev'
+password = 'Fr12345!'
+merchantid = '509778cf-7104-4c7f-850f-e14fdf5beb70'
+
 servicemethod = 'GET'
 serviceprotocol = "https://"
 servicehost = "listing-external-sit.hepsiburada.com"
-serviceurl = serviceprotocol + servicehost
-serviceendpoint = "/listings/merchantid"
+serviceendpoint = "/listings"
+serviceresource = "/merchantid/" + merchantid
+serviceurl = serviceprotocol + servicehost + serviceendpoint + serviceresource
 
-servicecontenttype = "application/json"
+servicecontenttype = "application/json; charset=utf-8"
+headers = {
+    'Accept': servicecontenttype
+}
 
-merchantid = "509778cf-7104-4c7f-850f-e14fdf5beb70"
-serviceresource = "/" + merchantid
+servicedata = None
+params = None
 
-username = 'framras_dev'
-password = 'Fr12345!'
-
-servicedata = ""
+s = requests.Session()
 try:
-    r = requests.get(serviceurl + serviceendpoint + serviceresource, auth=HTTPBasicAuth(username, password))
+    r = s.request(method=servicemethod, url=serviceurl, headers=headers, params=params, data=servicedata,
+                  auth=HTTPBasicAuth(username, password))
     with r:
-        print(r.text)
+        response = json.loads(r.content)
+        print(json.dumps(response))
+        for l in response["listings"]:
+            print(l["merchantSku"])
 except HTTPError as e:
     print('The server couldn\'t fulfill the request. ' + 'Error code: ' + str(e.code))
 finally:
-    print(r.request.url)
-    print(r.request.headers)
+    print(r.content)
+    print("this is the end")
