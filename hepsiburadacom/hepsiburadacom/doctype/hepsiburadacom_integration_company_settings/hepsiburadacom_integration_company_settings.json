@@ -21,7 +21,13 @@
   "check_testintegration",
   "testintegration_result",
   "initiate_section",
-  "initiate_listings"
+  "initiate_listings",
+  "column_break_19",
+  "initiate_listingsresult",
+  "section_break_20",
+  "initiate_orderitems",
+  "column_break_22",
+  "initiate_orderitemsresult"
  ],
  "fields": [
   {
@@ -112,10 +118,37 @@
   {
    "fieldname": "initiate_listings",
    "fieldtype": "Button",
-   "label": "Initiate"
+   "label": "Initiate Listings"
+  },
+  {
+   "fieldname": "initiate_orderitems",
+   "fieldtype": "Button",
+   "label": "Initiate Order Items"
+  },
+  {
+   "fieldname": "column_break_19",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "initiate_listingsresult",
+   "fieldtype": "Data",
+   "label": "Result"
+  },
+  {
+   "fieldname": "initiate_orderitemsresult",
+   "fieldtype": "Data",
+   "label": "Result"
+  },
+  {
+   "fieldname": "section_break_20",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_22",
+   "fieldtype": "Column Break"
   }
  ],
- "modified": "2019-11-21 19:50:16.918440",
+ "modified": "2019-11-23 12:01:36.300183",
  "modified_by": "Administrator",
  "module": "Hepsiburadacom",
  "name": "hepsiburadacom Integration Company Settings",

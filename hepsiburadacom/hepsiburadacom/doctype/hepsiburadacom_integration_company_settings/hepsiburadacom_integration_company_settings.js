@@ -41,7 +41,15 @@ frappe.ui.form.on('hepsiburadacom Integration Company Settings', {
         frappe.call({
             method: "hepsiburadacom.ListingsService.initiate_hepsiburada_listings",
             callback: function(r){
-                frm.set_value("testintegration_result", r.message)
+                frm.set_value("initiate_listingsresult", r.message)
+            }
+        })
+    },
+	initiate_orderitems: function(frm){
+        frappe.call({
+            method: "hepsiburadacom.OrdersService.initiate_hepsiburada_orderitems",
+            callback: function(r){
+                frm.set_value("initiate_orderitemsresult", r.message)
             }
         })
     }
