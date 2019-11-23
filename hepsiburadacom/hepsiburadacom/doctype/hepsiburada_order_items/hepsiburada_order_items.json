@@ -6,25 +6,39 @@
   "editable_grid": 1,
   "engine": "InnoDB",
   "field_order": [
-    "duedate",
-    "laststatusupdatedate",
-    "id",
-    "sku",
-    "orderid",
     "ordernumber",
-    "orderdate",
-    "quantity",
-    "merchantid",
-    "totalprice",
-    "unitprice",
-    "hbdiscount",
-    "vat",
-    "vatrate",
-    "customername",
     "status",
+    "customername",
+    "column_break_3",
+    "orderdate",
+    "duedate",
+    "section_break_6",
+    "sku",
+    "column_break_8",
+    "quantity",
+    "unitprice_section",
+    "unitprice_amount",
+    "column_break_12",
+    "unitprice_currency",
+    "hbdiscountunit_section",
+    "hbdiscount_unitprice_amount",
+    "column_break_16",
+    "hbdiscount_unitprice_currency",
+    "totalprice_section",
+    "totalprice_amount",
+    "column_break_20",
+    "totalprice_currency",
+    "hbdiscounttotal_section",
+    "hbdiscount_totalprice_amount",
+    "column_break_24",
+    "hbdiscount_totalprice_currency",
+    "vat_section",
+    "vat",
+    "column_break_28",
+    "vatrate",
+    "section_break_30",
     "shippingaddress",
     "invoice",
-    "sapnumber",
     "dispatchtime",
     "commission",
     "cargocompanymodel",
@@ -42,14 +56,20 @@
     "deliverytype",
     "deliveryoptionid",
     "slot",
-    "pickuptime"
+    "pickuptime",
+    "id",
+    "orderid",
+    "merchantid",
+    "sapnumber",
+    "laststatusupdatedate"
   ],
   "fields": [
     {
       "description": "Sipari\u015fin kargoya verilmesi gereken son teslim tarihini belirtir.",
       "fieldname": "duedate",
       "fieldtype": "Data",
-      "label": "Due Date"
+      "label": "Due Date",
+      "read_only": 1
     },
     {
       "description": "Sipari\u015f i\u00e7erisinde bulunan kalemin enson i\u015flem g\u00f6rd\u00fc\u011f\u00fc tarihtir.",
@@ -77,7 +97,8 @@
       "description": "Sipari\u015fin hepsiburada taraf\u0131nda unique de\u011feridir.",
       "fieldname": "orderid",
       "fieldtype": "Data",
-      "label": "Order Id"
+      "label": "Order Id",
+      "read_only": 1
     },
     {
       "description": "Sipari\u015f numaras\u0131d\u0131r.",
@@ -108,26 +129,6 @@
       "read_only": 1
     },
     {
-      "description": "currency: Sipari\u015fteki kalemlerin her birinin toplam adet tutar\u0131n\u0131n para birimi cinsinden de\u011feridir.\namount: Sipari\u015fteki kalemlerin her birinin toplam adet tutar\u0131d\u0131r.",
-      "fieldname": "totalprice",
-      "fieldtype": "Small Text",
-      "label": "Total Price",
-      "read_only": 1
-    },
-    {
-      "description": "currency: Sipari\u015fteki tek bir kalemin tutar\u0131n\u0131n para birimi cinsinden de\u011feridir.\namount: Sipari\u015fteki tek bir kalemin tutar\u0131n\u0131n de\u011feridir.",
-      "fieldname": "unitprice",
-      "fieldtype": "Small Text",
-      "label": "Unit Price",
-      "read_only": 1
-    },
-    {
-      "fieldname": "hbdiscount",
-      "fieldtype": "Small Text",
-      "label": "HB Discount",
-      "read_only": 1
-    },
-    {
       "description": "KDV tutar\u0131d\u0131r.",
       "fieldname": "vat",
       "fieldtype": "Data",
@@ -138,138 +139,280 @@
       "description": "KDV oran\u0131d\u0131r.",
       "fieldname": "vatrate",
       "fieldtype": "Data",
-      "label": "VAT Rate"
+      "label": "VAT Rate",
+      "read_only": 1
     },
     {
       "description": "M\u00fc\u015fterinin ad\u0131d\u0131r.",
       "fieldname": "customername",
       "fieldtype": "Data",
-      "label": "Customer Name"
+      "label": "Customer Name",
+      "read_only": 1
     },
     {
       "description": "Sipari\u015fin durumunu belirtir. Open: Yeni sipari\u015f belirtir. / Unpacked: Paketi bozulan sipari\u015fleri belirtir.",
       "fieldname": "status",
       "fieldtype": "Data",
-      "label": "Status"
+      "label": "Status",
+      "read_only": 1
     },
     {
       "description": "Teslimat adresidir.",
       "fieldname": "shippingaddress",
       "fieldtype": "Small Text",
-      "label": "Shipping Address"
+      "label": "Shipping Address",
+      "read_only": 1
     },
     {
       "description": "Fatura bu alan i\u00e7erisindeki bilgiler ile olu\u015fturulmal\u0131d\u0131r.",
       "fieldname": "invoice",
       "fieldtype": "Small Text",
-      "label": "Invoice"
+      "label": "Invoice",
+      "read_only": 1
     },
     {
       "description": "Hepsiburada.com taraf\u0131nda sipari\u015fin i\u00e7erisinde bulunan kalemlerin s\u0131ra bilgisini verir.",
       "fieldname": "sapnumber",
       "fieldtype": "Data",
-      "label": "Hb sap Number"
+      "label": "Hb sap Number",
+      "read_only": 1
     },
     {
       "description": "Sipari\u015fin kargoya verilme s\u00fcresidir.",
       "fieldname": "dispatchtime",
       "fieldtype": "Data",
-      "label": "Dispatch Time"
+      "label": "Dispatch Time",
+      "read_only": 1
     },
     {
       "fieldname": "commission",
       "fieldtype": "Small Text",
-      "label": "Commission"
+      "label": "Commission",
+      "read_only": 1
     },
     {
       "fieldname": "cargocompanymodel",
       "fieldtype": "Small Text",
-      "label": "Cargo Company Model"
+      "label": "Cargo Company Model",
+      "read_only": 1
     },
     {
       "description": "Listingin \u00fczerine tan\u0131ml\u0131 kargo firmas\u0131n\u0131n isim bilgisidir.",
       "fieldname": "cargocompany",
       "fieldtype": "Data",
-      "label": "Cargo Company"
+      "label": "Cargo Company",
+      "read_only": 1
     },
     {
       "fieldname": "customizedtext01",
       "fieldtype": "Small Text",
-      "label": "customizedText01"
+      "label": "customizedText01",
+      "read_only": 1
     },
     {
       "fieldname": "customizedtext02",
       "fieldtype": "Small Text",
-      "label": "customizedText02"
+      "label": "customizedText02",
+      "read_only": 1
     },
     {
       "fieldname": "customizedtext03",
       "fieldtype": "Small Text",
-      "label": "customizedText03"
+      "label": "customizedText03",
+      "read_only": 1
     },
     {
       "fieldname": "customizedtext04",
       "fieldtype": "Small Text",
-      "label": "customizedText04"
+      "label": "customizedText04",
+      "read_only": 1
     },
     {
       "fieldname": "customizedtextx",
       "fieldtype": "Small Text",
-      "label": "customizedTextX"
+      "label": "customizedTextX",
+      "read_only": 1
     },
     {
       "fieldname": "creditcardholdername",
       "fieldtype": "Data",
-      "label": "Credit Card Holder Name"
+      "label": "Credit Card Holder Name",
+      "read_only": 1
     },
     {
       "default": "0",
       "fieldname": "iscustomized",
       "fieldtype": "Check",
-      "label": "Is Customized"
+      "label": "Is Customized",
+      "read_only": 1
     },
     {
       "default": "0",
       "fieldname": "cancreatepackage",
       "fieldtype": "Check",
-      "label": "Can Create Package"
+      "label": "Can Create Package",
+      "read_only": 1
     },
     {
       "default": "0",
       "fieldname": "iscancellable",
       "fieldtype": "Check",
-      "label": "Is Cancellable"
+      "label": "Is Cancellable",
+      "read_only": 1
     },
     {
       "default": "0",
       "fieldname": "iscancellablebyhbadmin",
       "fieldtype": "Check",
-      "label": "Is Cancellable By HB Admin"
+      "label": "Is Cancellable By HB Admin",
+      "read_only": 1
     },
     {
       "fieldname": "deliverytype",
       "fieldtype": "Data",
-      "label": "Delivery Type"
+      "label": "Delivery Type",
+      "read_only": 1
     },
     {
       "fieldname": "deliveryoptionid",
       "fieldtype": "Data",
-      "label": "Delivery Option Id"
+      "label": "Delivery Option Id",
+      "read_only": 1
     },
     {
       "description": "M\u00fc\u015fterinin paketi teslim almak i\u00e7in se\u00e7ti\u011fi saat aral\u0131\u011f\u0131d\u0131r.",
       "fieldname": "slot",
       "fieldtype": "Data",
-      "label": "Slot"
+      "label": "Slot",
+      "read_only": 1
     },
     {
       "description": "Merchant\u0131n kargo firmas\u0131na teslim etmesi gereken saat aral\u0131\u011f\u0131d\u0131r.",
       "fieldname": "pickuptime",
       "fieldtype": "Data",
-      "label": "Pick Up Time"
+      "label": "Pick Up Time",
+      "read_only": 1
+    },
+    {
+      "description": "Sipari\u015fteki tek bir kalemin tutar\u0131n\u0131n para birimi cinsinden de\u011feridir.",
+      "fieldname": "totalprice_currency",
+      "fieldtype": "Data",
+      "label": "Currency",
+      "read_only": 1
+    },
+    {
+      "fieldname": "column_break_12",
+      "fieldtype": "Column Break"
+    },
+    {
+      "description": "Sipari\u015fteki kalemlerin her birinin toplam adet tutar\u0131d\u0131r.",
+      "fieldname": "totalprice_amount",
+      "fieldtype": "Data",
+      "label": "Amount",
+      "read_only": 1
+    },
+    {
+      "fieldname": "totalprice_section",
+      "fieldtype": "Section Break",
+      "label": "Total Price",
+      "read_only": 1
+    },
+    {
+      "fieldname": "unitprice_section",
+      "fieldtype": "Section Break",
+      "label": "Unit Price",
+      "read_only": 1
+    },
+    {
+      "description": "Sipari\u015fteki tek bir kalemin tutar\u0131n\u0131n para birimi cinsinden de\u011feridir.",
+      "fieldname": "unitprice_currency",
+      "fieldtype": "Data",
+      "label": "Currency",
+      "read_only": 1
+    },
+    {
+      "fieldname": "column_break_16",
+      "fieldtype": "Column Break"
+    },
+    {
+      "description": "Sipari\u015fteki tek bir kalemin tutar\u0131n\u0131n de\u011feridir.",
+      "fieldname": "unitprice_amount",
+      "fieldtype": "Data",
+      "label": "Amount",
+      "read_only": 1
+    },
+    {
+      "fieldname": "hbdiscounttotal_section",
+      "fieldtype": "Section Break",
+      "label": "HB Total Discount",
+      "read_only": 1
+    },
+    {
+      "fieldname": "hbdiscount_totalprice_currency",
+      "fieldtype": "Data",
+      "label": "Currency",
+      "read_only": 1
+    },
+    {
+      "fieldname": "hbdiscount_totalprice_amount",
+      "fieldtype": "Data",
+      "label": "Amount",
+      "read_only": 1
+    },
+    {
+      "fieldname": "hbdiscountunit_section",
+      "fieldtype": "Section Break",
+      "label": "HB Unit Discount",
+      "read_only": 1
+    },
+    {
+      "fieldname": "hbdiscount_unitprice_currency",
+      "fieldtype": "Data",
+      "label": "Currency",
+      "read_only": 1
+    },
+    {
+      "fieldname": "column_break_24",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "hbdiscount_unitprice_amount",
+      "fieldtype": "Data",
+      "label": "Amount",
+      "read_only": 1
+    },
+    {
+      "fieldname": "column_break_8",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "column_break_20",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "vat_section",
+      "fieldtype": "Section Break",
+      "label": "VAT",
+      "read_only": 1
+    },
+    {
+      "fieldname": "column_break_3",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "section_break_6",
+      "fieldtype": "Section Break"
+    },
+    {
+      "fieldname": "column_break_28",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "section_break_30",
+      "fieldtype": "Section Break"
     }
   ],
-  "modified": "2019-11-23 17:17:49.127803",
+  "modified": "2019-11-23 21:01:06.167162",
   "modified_by": "Administrator",
   "module": "Hepsiburadacom",
   "name": "hepsiburada Order Items",
