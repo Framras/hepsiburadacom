@@ -1,56 +1,53 @@
-import frappe
 from hepsiburadacom.HepsiburadaConnection import HepsiburadaConnection
 from hepsiburadacom.HepsiburadaAddress import HepsiburadaAddress
 
+username = 'framras_dev'
+password = 'Fr12345!'
+merchantid = '509778cf-7104-4c7f-850f-e14fdf5beb70'
+ordernumber = '041241372'
 
-class OrdersService:
-    def __init__(self):
-        self.hepsiburadaconnection = HepsiburadaConnection()
-        self.servicepath = "/orders"
-        self.integration = "order"
-
-    # Satıcıya Ait Listing Bilgilerini Listeleme (Get List of Listings [GET])
-    # Bu metod satıcıya ait listing bilgilerine ulaşmanıza olanak tanır.
-
-    def get_list_of_orderitems(self, offset, limit):
-        company = frappe.defaults.get_user_default("Company")
-        servicemethod = "GET"
-        servicetemplate = "/merchantid"
-        servicetemplateresource = "/" + frappe.db.get_value("hepsiburadacom Integration Company Settings",
-                                                            company, "merchantid")
-        service = self.servicepath + servicetemplate + servicetemplateresource
-        if offset is None or limit is None:
-            params = None
-        else:
-            params = {
-                'offset': offset,
-                'limit': limit
-            }
-
-        return self.hepsiburadaconnection.connect(self.integration, servicemethod, service, params, servicedata=None)
-
-    def get_list_of_orders_details(self, offset, limit):
-        company = frappe.defaults.get_user_default("Company")
-        servicemethod = "GET"
-        servicetemplate = "/merchantid"
-        servicetemplateresource = "/" + frappe.db.get_value("hepsiburadacom Integration Company Settings",
-                                                            company, "merchantid")
-        service = self.servicepath + servicetemplate + servicetemplateresource
-        if offset is None or limit is None:
-            params = None
-        else:
-            params = {
-                'offset': offset,
-                'limit': limit
-            }
-
-        return self.hepsiburadaconnection.connect(self.integration, servicemethod, service, params, servicedata=None)
+hepsiburadaconnection = HepsiburadaConnection()
+servicepath = "/orders"
+integration = "order"
 
 
-@frappe.whitelist()
+# Satıcıya Ait Listing Bilgilerini Listeleme (Get List of Listings [GET])
+# Bu metod satıcıya ait listing bilgilerine ulaşmanıza olanak tanır.
+
+def get_list_of_orderitems(self, offset, limit):
+    servicemethod = "GET"
+    servicetemplate = "/merchantid"
+    servicetemplateresource = "/" + merchantid
+    service = self.servicepath + servicetemplate + servicetemplateresource
+    if offset is None or limit is None:
+        params = None
+    else:
+        params = {
+            'offset': offset,
+            'limit': limit
+        }
+
+    return self.hepsiburadaconnection.connect(self.integration, servicemethod, service, params, servicedata=None)
+
+
+def get_list_of_orders_details(self, offset, limit):
+    servicemethod = "GET"
+    servicetemplate = "/merchantid"
+    servicetemplateresource = "/" + merchantid
+    service = self.servicepath + servicetemplate + servicetemplateresource
+    if offset is None or limit is None:
+        params = None
+    else:
+        params = {
+            'offset': offset,
+            'limit': limit
+        }
+
+    return self.hepsiburadaconnection.connect(self.integration, servicemethod, service, params, servicedata=None)
+
+
 def initiate_hepsiburada_orderitems():
-    os = OrdersService()
-    orderitems = os.get_list_of_orderitems(None, None)
+    orderitems = get_list_of_orderitems(None, None)
     meta = frappe.get_meta("hepsiburada Order Items")
     for orderitem in orderitems["items"]:
         # check if record exists by filters
