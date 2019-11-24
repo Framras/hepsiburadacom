@@ -10,42 +10,45 @@ class OrdersService:
         self.integration = "order"
         self.company = frappe.defaults.get_user_default("Company")
 
-    # Satıcıya Ait Listing Bilgilerini Listeleme (Get List of Listings [GET])
-    # Bu metod satıcıya ait listing bilgilerine ulaşmanıza olanak tanır.
-
+    # Ödemesi Tamamlanmış Siparişleri Listeleme (Get List of Orders [GET])
+    # Bu metod ödemesi tamamlanmış yeni siparişleri (new orders) listeleyebilmenize olanak tanır.
     def get_list_of_orderitems(self, offset, limit):
-
         servicemethod = "GET"
         servicetemplate = "/merchantid"
         servicetemplateresource = "/" + frappe.db.get_value("hepsiburadacom Integration Company Setting",
                                                             self.company, "merchantid")
         service = self.servicepath + servicetemplate + servicetemplateresource
+        # Parametreler(Parameters)
         if offset is None or limit is None:
-            params = None
+            parameters = None
         else:
-            params = {
+            parameters = {
                 "offset": offset,
                 "limit": limit
             }
 
-        return self.hepsiburadaconnection.connect(self.integration, servicemethod, service, params, servicedata=None)
+        return self.hepsiburadaconnection.connect(self.integration, servicemethod, service, parameters,
+                                                  servicedata=None)
 
+    # Siparişe Ait Detay Bilgilerini Listeleme (Get List of Orders Details [GET])
+    # Bu metod bir siparişe ait kalemlerin detaylarını listelemeize olanak tanır.
     def get_list_of_orders_details(self, offset, limit):
-
         servicemethod = "GET"
         servicetemplate = "/merchantid"
         servicetemplateresource = "/" + frappe.db.get_value("hepsiburadacom Integration Company Setting",
                                                             self.company, "merchantid")
         service = self.servicepath + servicetemplate + servicetemplateresource
+        # Parametreler(Parameters)
         if offset is None or limit is None:
-            params = None
+            parameters = None
         else:
-            params = {
+            parameters = {
                 "offset": offset,
                 "limit": limit
             }
 
-        return self.hepsiburadaconnection.connect(self.integration, servicemethod, service, params, servicedata=None)
+        return self.hepsiburadaconnection.connect(self.integration, servicemethod, service, parameters,
+                                                  servicedata=None)
 
 
 @frappe.whitelist()

@@ -8,6 +8,10 @@ import json
 class HepsiburadaConnection:
     def __init__(self):
         self._s = requests.Session()
+        # Başlık(Header)
+        self.headers = {
+            'Accept': frappe.db.get_single_value("hepsiburadacom Integration Setting", "contenttype")
+        }
 
     def connect(self, integration: str, servicemethod: str, service: str, params, servicedata):
         company = frappe.defaults.get_user_default("Company")
@@ -28,15 +32,10 @@ class HepsiburadaConnection:
                     serviceurl = frappe.db.get_single_value("hepsiburadacom Integration Setting", "order_testhost")
 
             url = serviceurl + service
-            # her web servis çağrısının başlık (header) kısmına utsToken etiketiyle sistem token’ının değerini
-            # eklemelidir
-            headers = {
-                'Accept': frappe.db.get_single_value("hepsiburadacom Integration Setting", "contenttype")
-            }
 
             try:
-                r = self._s.request(method=servicemethod, url=url, headers=headers, params=params, data=servicedata,
-                                    auth=HTTPBasicAuth(username, password))
+                r = self._s.request(method=servicemethod, url=url, headers=self.headers, params=params,
+                                    data=servicedata, auth=HTTPBasicAuth(username, password))
                 # For successful API call, response code will be 200 (OK)
                 with r:
                     # Loading the response data into a dict variable json.loads takes in only binary or string
