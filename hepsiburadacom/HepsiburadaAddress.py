@@ -24,10 +24,10 @@ class HepsiburadaAddress:
             newdoc.insert()
 
         frdoc = frappe.get_doc(self.doctype, self.address["addressId"] + "-" + self.default_addresstype)
-        if self.address_type == "shipping":
+        if self.address_type == "Shipping":
             frdoc.db_set("address_type", "Shipping")
             frdoc.db_set("is_shipping_address", 1)
-        elif self.address_type == "billing":
+        elif self.address_type == "Billing":
             if frdoc.address_type != self.default_addresstype:
                 frdoc.db_set("address_type", "Billing")
             frdoc.db_set("is_primary_address", 1)

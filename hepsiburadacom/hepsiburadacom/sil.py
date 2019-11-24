@@ -114,7 +114,7 @@ def initiate_hepsiburada_orders():
         frdoc = frappe.get_doc('hepsiburada Order Item', str(orderitem["id"]))
         for itemkey in orderitem.keys():
             if itemkey == "shippingAddress":
-                sa = HepsiburadaAddress(orderitem[itemkey], "shipping")
+                sa = HepsiburadaAddress(orderitem[itemkey], "Shipping")
                 sareturn = sa.use_address()
             elif itemkey == "totalPrice" or \
                     itemkey == "unitPrice" or \
@@ -134,7 +134,7 @@ def initiate_hepsiburada_orders():
             elif itemkey == "invoice":
                 for ikey in orderitem[itemkey].keys():
                     if ikey == "address":
-                        sa = HepsiburadaAddress(orderitem[itemkey][ikey], "billing")
+                        sa = HepsiburadaAddress(orderitem[itemkey][ikey], "Billing")
                         sareturn = sa.use_address()
                     else:
                         if meta.has_field((itemkey + "_" + ikey).lower()):

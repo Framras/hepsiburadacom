@@ -32,20 +32,14 @@ class OrdersService:
 
     # Siparişe Ait Detay Bilgilerini Listeleme (Get List of Orders Details [GET])
     # Bu metod bir siparişe ait kalemlerin detaylarını listelemeize olanak tanır.
-    def get_list_of_orders_details(self, offset, limit):
+    def get_list_of_orders_details(self, ordernumber: int):
         servicemethod = "GET"
         servicetemplate = "/merchantid"
+        # Merchantid (gerekli, guid, b2910839-83b9-4d45-adb6-86bad457edcb) Her satıcının unique bir tanımlayıcısıdır.
+        # Ordernumber (gerekli, int, 004563585) Her siparişin unique bir tanımlayıcısıdır.
         servicetemplateresource = "/" + frappe.db.get_value("hepsiburadacom Integration Company Setting",
-                                                            self.company, "merchantid")
+                                                            self.company, "merchantid") + "/ordernumber/" + ordernumber
         service = self.servicepath + servicetemplate + servicetemplateresource
-        # Parametreler(Parameters)
-        if offset is None or limit is None:
-            parameters = None
-        else:
-            parameters = {
-                "offset": offset,
-                "limit": limit
-            }
 
         return self.hepsiburadaconnection.connect(self.integration, servicemethod, service, parameters,
                                                   servicedata=None)
@@ -105,6 +99,7 @@ def initiate_hepsiburada_orderitems():
                         frdoc.db_set(itemkey.lower(), item[itemkey])
 
             frdoc.save()
+            paymentStatus
 
     return frappe.db.count("hepsiburada Order Item",
                            filters={"merchantid": frappe.db.get_value("hepsiburadacom Integration Company Setting",
