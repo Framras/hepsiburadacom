@@ -7,5 +7,5 @@ from __future__ import unicode_literals
 from frappe.model.document import Document
 
 
-class hepsiburadacomIntegrationCompanySettings(Document):
+class hepsiburadacomIntegrationCompanySetting(Document):
     pass

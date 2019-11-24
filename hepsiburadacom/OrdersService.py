@@ -8,16 +8,17 @@ class OrdersService:
         self.hepsiburadaconnection = HepsiburadaConnection()
         self.servicepath = "/orders"
         self.integration = "order"
+        self.company = frappe.defaults.get_user_default("Company")
 
     # Satıcıya Ait Listing Bilgilerini Listeleme (Get List of Listings [GET])
     # Bu metod satıcıya ait listing bilgilerine ulaşmanıza olanak tanır.
 
     def get_list_of_orderitems(self, offset, limit):
-        company = frappe.defaults.get_user_default("Company")
+
         servicemethod = "GET"
         servicetemplate = "/merchantid"
         servicetemplateresource = "/" + frappe.db.get_value("hepsiburadacom Integration Company Settings",
-                                                            company, "merchantid")
+                                                            self.company, "merchantid")
         service = self.servicepath + servicetemplate + servicetemplateresource
         if offset is None or limit is None:
             params = None
@@ -30,11 +31,11 @@ class OrdersService:
         return self.hepsiburadaconnection.connect(self.integration, servicemethod, service, params, servicedata=None)
 
     def get_list_of_orders_details(self, offset, limit):
-        company = frappe.defaults.get_user_default("Company")
+
         servicemethod = "GET"
         servicetemplate = "/merchantid"
         servicetemplateresource = "/" + frappe.db.get_value("hepsiburadacom Integration Company Settings",
-                                                            company, "merchantid")
+                                                            self.company, "merchantid")
         service = self.servicepath + servicetemplate + servicetemplateresource
         if offset is None or limit is None:
             params = None
@@ -51,56 +52,63 @@ class OrdersService:
 def initiate_hepsiburada_orderitems():
     os = OrdersService()
     orderitems = os.get_list_of_orderitems(None, None)
+    totalcount = orderitems["totalCount"]
     meta = frappe.get_meta("hepsiburada Order Items")
-    for orderitem in orderitems["items"]:
+    for item in orderitems["items"]:
         # check if record exists by filters
         if not frappe.db.exists({
             'doctype': 'hepsiburada Order Items',
-            'id': orderitem["id"]
+            'id': item["id"]
         }):
             newdoc = frappe.new_doc("hepsiburada Order Items")
-            newdoc.id = orderitem["id"]
+            newdoc.id = item["id"]
+            newdoc.company = os.company
             newdoc.insert()
 
-        frdoc = frappe.get_doc('hepsiburada Order Items', orderitem["id"])
-        for itemkey in orderitem.keys():
-            if itemkey == "totalPrice" or \
+        frdoc = frappe.get_doc('hepsiburada Order Items', item["id"])
+        for itemkey in item.keys():
+            if itemkey == "shippingAddress":
+                sa = HepsiburadaAddress(item[itemkey], "Shipping")
+                if sa.use_address():
+                    frdoc.db_set((itemkey + "_" + "addressId").lower(), item[itemkey]["addressId"])
+            elif itemkey == "totalPrice" or \
                     itemkey == "unitPrice" or \
-                    itemkey == "shippingAddress" or \
                     itemkey == "commission" or \
                     itemkey == "cargoCompanyModel":
-                for ikey in orderitem[itemkey].keys():
+                for ikey in item[itemkey].keys():
                     if meta.has_field((itemkey + "_" + ikey).lower()):
-                        frdoc.db_set((itemkey + "_" + ikey).lower(), orderitem[itemkey][ikey])
+                        frdoc.db_set((itemkey + "_" + ikey).lower(), item[itemkey][ikey])
             elif itemkey == "hbDiscount":
-                for ikey in orderitem[itemkey].keys():
+                for ikey in item[itemkey].keys():
                     if ikey == "totalPrice" or \
                             ikey == "unitPrice":
-                        for skey in orderitem[itemkey][ikey].keys():
+                        for skey in item[itemkey][ikey].keys():
                             if meta.has_field((itemkey + "_" + ikey + "_" + skey).lower()):
                                 frdoc.db_set(
-                                    (itemkey + "_" + ikey + "_" + skey).lower(), orderitem[itemkey][ikey][skey])
+                                    (itemkey + "_" + ikey + "_" + skey).lower(), item[itemkey][ikey][skey])
             elif itemkey == "invoice":
-                for ikey in orderitem[itemkey].keys():
+                for ikey in item[itemkey].keys():
                     if ikey == "address":
-                        for skey in orderitem[itemkey][ikey].keys():
-                            if meta.has_field((itemkey + "_" + ikey + "_" + skey).lower()):
-                                frdoc.db_set(
-                                    (itemkey + "_" + ikey + "_" + skey).lower(), orderitem[itemkey][ikey][skey])
+                        sa = HepsiburadaAddress(item[itemkey][ikey], "Billing")
+                        if sa.use_address():
+                            frdoc.db_set((itemkey + "_" + ikey + "_" + "addressId").lower(),
+                                         item[itemkey][ikey]["addressId"])
                     else:
                         if meta.has_field((itemkey + "_" + ikey).lower()):
-                            frdoc.db_set((itemkey + "_" + ikey).lower(), orderitem[itemkey][ikey])
+                            frdoc.db_set((itemkey + "_" + ikey).lower(), item[itemkey][ikey])
             else:
                 if meta.has_field(itemkey.lower()):
-                    frdoc.db_set(itemkey.lower(), orderitem[itemkey])
+                    frdoc.db_set(itemkey.lower(), item[itemkey])
 
         frdoc.save()
 
-    return "success"
+    return frappe.db.count("hepsiburada Order Items",
+                           filters={"merchantid": frappe.db.get_value("hepsiburadacom Integration Company Settings",
+                                                                      os.company, "merchantid")}) == totalcount
 
 
 @frappe.whitelist()
-def initiate_hepsiburada_orders():
+def initiate_hepsiburada_orders_details():
     os = OrdersService()
     orderitems = os.get_list_of_orders_details(None, None)
     meta = frappe.get_meta("hepsiburada Orders")
@@ -108,17 +116,19 @@ def initiate_hepsiburada_orders():
         # check if record exists by filters
         if not frappe.db.exists({
             'doctype': 'hepsiburada Orders',
-            'id': str(orderitem["id"])
+            'id': orderitem["id"]
         }):
             newdoc = frappe.new_doc("hepsiburada Orders")
             newdoc.id = str(orderitem["id"])
             newdoc.insert()
 
-        frdoc = frappe.get_doc('hepsiburada Order Items', str(orderitem["id"]))
+        frdoc = frappe.get_doc('hepsiburada Order Items', orderitem["id"])
         for itemkey in orderitem.keys():
             if itemkey == "shippingAddress":
-                sa = HepsiburadaAddress(orderitem[itemkey], "shipping")
-                sareturn = sa.use_address()
+                sa = HepsiburadaAddress(orderitem[itemkey], "Shipping")
+                if sa.use_address():
+                    if meta.has_field((itemkey + "_" + ikey).lower()):
+                        frdoc.db_set((itemkey + "_" + ikey).lower(), orderitem[itemkey][ikey])
             elif itemkey == "totalPrice" or \
                     itemkey == "unitPrice" or \
                     itemkey == "commission" or \
@@ -137,8 +147,9 @@ def initiate_hepsiburada_orders():
             elif itemkey == "invoice":
                 for ikey in orderitem[itemkey].keys():
                     if ikey == "address":
-                        sa = HepsiburadaAddress(orderitem[itemkey][ikey], "billing")
-                        sareturn = sa.use_address()
+                        sa = HepsiburadaAddress(orderitem[itemkey][ikey], "Billing")
+                        if sa.use_address():
+                            pass
                     else:
                         if meta.has_field((itemkey + "_" + ikey).lower()):
                             frdoc.db_set((itemkey + "_" + ikey).lower(), orderitem[itemkey][ikey])
@@ -148,4 +159,6 @@ def initiate_hepsiburada_orders():
 
         frdoc.save()
 
-    return sareturn
+    return frappe.db.count("hepsiburada Order Items",
+                           filters={"merchantid": frappe.db.get_value("hepsiburadacom Integration Company Settings",
+                                                                      os.company, "merchantid")})

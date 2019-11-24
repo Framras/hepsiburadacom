@@ -7,5 +7,5 @@ from __future__ import unicode_literals
 import unittest
 
 
-class TesthepsiburadaListings(unittest.TestCase):
+class TesthepsiburadacomIntegrationSetting(unittest.TestCase):
     pass

@@ -7,5 +7,5 @@ from __future__ import unicode_literals
 import unittest
 
 
-class TesthepsiburadaOrderItems(unittest.TestCase):
+class TesthepsiburadaOrderItem(unittest.TestCase):
     pass

@@ -23,25 +23,29 @@ class HepsiburadaAddress:
                                               fieldname="country_name")
             newdoc.insert()
 
-        frdoc = frappe.get_doc(self.doctype, self.address["addressId"])
+        frdoc = frappe.get_doc(self.doctype, self.address["addressId"] + "-" + self.default_addresstype)
         if self.address_type == "shipping":
-            frdoc.frdoc.db_set("address_type", "Shipping")
-            frdoc.frdoc.db_set("is_shipping_address", 1)
+            frdoc.db_set("address_type", "Shipping")
+            frdoc.db_set("is_shipping_address", 1)
         elif self.address_type == "billing":
             if frdoc.address_type != self.default_addresstype:
-                frdoc.frdoc.db_set("address_type", "Billing")
-            frdoc.frdoc.db_set("is_primary_address", 1)
-        frdoc.frdoc.db_set("address_line1", self.address["address"])
-        frdoc.frdoc.db_set("address_line2", self.address["district"] + "/" + self.address["town"])
-        frdoc.frdoc.db_set("country", frappe.get_value("Country", filters={'code': self.address["countryCode"]},
-                                                       fieldname="country_name"))
-        frdoc.frdoc.db_set("phone", self.address["phoneNumber"])
-        frdoc.frdoc.db_set("city", self.address["city"])
-        frdoc.frdoc.db_set("email_id", self.address["email"])
+                frdoc.db_set("address_type", "Billing")
+            frdoc.db_set("is_primary_address", 1)
+        frdoc.db_set("address_line1", self.address["address"])
+        frdoc.db_set("address_line2", self.address["district"] + "/" + self.address["town"])
+        frdoc.db_set("country", frappe.get_value("Country", filters={'code': self.address["countryCode"]},
+                                                 fieldname="country_name"))
+        frdoc.db_set("phone", self.address["phoneNumber"])
+        frdoc.db_set("city", self.address["city"])
+        frdoc.db_set("email_id", self.address["email"])
 
         meta = frappe.get_meta(self.doctype)
         for addresskey in ["alternatePhoneNumber", "name"]:
             if meta.has_field("hepsiburada_" + addresskey.lower()):
-                frdoc.db_set("hepsiburada_" + addresskey.lower(), self.doctype[addresskey])
+                frdoc.db_set("hepsiburada_" + addresskey.lower(), self.address[addresskey])
         frdoc.save()
-        return True
+
+        return frappe.db.exists({
+            'doctype': self.doctype,
+            'address_title': self.address["addressId"]
+        })

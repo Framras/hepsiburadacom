@@ -45,33 +45,13 @@
     "commission_currency",
     "shippingaddress_section",
     "shippingaddress_addressid",
-    "shippingaddress_address",
-    "shippingaddress_name",
-    "shippingaddress_email",
-    "column_break_43",
-    "shippingaddress_countrycode",
-    "shippingaddress_phonenumber",
-    "shippingaddress_alternatephonenumber",
-    "shippingaddress_district",
-    "shippingaddress_city",
-    "shippingaddress_town",
+    "invoiceaddress_section",
+    "invoice_address_addressid",
     "invoice_section",
     "invoice_turkishidentitynumber",
     "invoice_taxnumber",
     "column_break_53",
     "invoice_taxoffice",
-    "invoiceaddress_section",
-    "invoice_address_addressid",
-    "invoice_address_address",
-    "invoice_address_name",
-    "invoice_address_email",
-    "invoice_address_countrycode",
-    "column_break_61",
-    "invoice_address_phonenumber",
-    "invoice_address_alternatephonenumber",
-    "invoice_address_district",
-    "invoice_address_city",
-    "invoice_address_town",
     "section_break_67",
     "dispatchtime",
     "column_break_69",
@@ -433,62 +413,9 @@
     },
     {
       "fieldname": "shippingaddress_addressid",
-      "fieldtype": "Data",
+      "fieldtype": "Link",
       "label": "Address ID",
-      "read_only": 1
-    },
-    {
-      "fieldname": "shippingaddress_address",
-      "fieldtype": "Data",
-      "label": "Address",
-      "read_only": 1
-    },
-    {
-      "fieldname": "shippingaddress_name",
-      "fieldtype": "Data",
-      "label": "Name",
-      "read_only": 1
-    },
-    {
-      "fieldname": "shippingaddress_email",
-      "fieldtype": "Data",
-      "label": "Email",
-      "read_only": 1
-    },
-    {
-      "fieldname": "shippingaddress_countrycode",
-      "fieldtype": "Data",
-      "label": "Country Code",
-      "read_only": 1
-    },
-    {
-      "fieldname": "shippingaddress_phonenumber",
-      "fieldtype": "Data",
-      "label": "Phone Number",
-      "read_only": 1
-    },
-    {
-      "fieldname": "shippingaddress_alternatephonenumber",
-      "fieldtype": "Data",
-      "label": "Alternate Phone Number",
-      "read_only": 1
-    },
-    {
-      "fieldname": "shippingaddress_district",
-      "fieldtype": "Data",
-      "label": "District",
-      "read_only": 1
-    },
-    {
-      "fieldname": "shippingaddress_city",
-      "fieldtype": "Data",
-      "label": "City",
-      "read_only": 1
-    },
-    {
-      "fieldname": "shippingaddress_town",
-      "fieldtype": "Data",
-      "label": "Town",
+      "options": "Address",
       "read_only": 1
     },
     {
@@ -507,38 +434,9 @@
     },
     {
       "fieldname": "invoice_address_addressid",
-      "fieldtype": "Data",
+      "fieldtype": "Link",
       "label": "Address ID",
-      "read_only": 1
-    },
-    {
-      "fieldname": "invoice_address_address",
-      "fieldtype": "Data",
-      "label": "Address",
-      "read_only": 1
-    },
-    {
-      "fieldname": "invoice_address_name",
-      "fieldtype": "Data",
-      "label": "Name",
-      "read_only": 1
-    },
-    {
-      "fieldname": "invoice_address_email",
-      "fieldtype": "Data",
-      "label": "Email",
-      "read_only": 1
-    },
-    {
-      "fieldname": "invoice_address_countrycode",
-      "fieldtype": "Data",
-      "label": "Country Code",
-      "read_only": 1
-    },
-    {
-      "fieldname": "invoice_address_phonenumber",
-      "fieldtype": "Data",
-      "label": "Phone Number",
+      "options": "Address",
       "read_only": 1
     },
     {
@@ -559,30 +457,6 @@
       "fieldname": "invoiceaddress_section",
       "fieldtype": "Section Break",
       "label": "Invoice Address"
-    },
-    {
-      "fieldname": "invoice_address_alternatephonenumber",
-      "fieldtype": "Data",
-      "label": "Alternate Phone Number",
-      "read_only": 1
-    },
-    {
-      "fieldname": "invoice_address_district",
-      "fieldtype": "Data",
-      "label": "District",
-      "read_only": 1
-    },
-    {
-      "fieldname": "invoice_address_city",
-      "fieldtype": "Data",
-      "label": "City",
-      "read_only": 1
-    },
-    {
-      "fieldname": "invoice_address_town",
-      "fieldtype": "Data",
-      "label": "Town",
-      "read_only": 1
     },
     {
       "fieldname": "column_break_36",
@@ -662,15 +536,7 @@
       "fieldtype": "Column Break"
     },
     {
-      "fieldname": "column_break_43",
-      "fieldtype": "Column Break"
-    },
-    {
       "fieldname": "column_break_53",
-      "fieldtype": "Column Break"
-    },
-    {
-      "fieldname": "column_break_61",
       "fieldtype": "Column Break"
     },
     {
@@ -706,10 +572,10 @@
       "fieldtype": "Column Break"
     }
   ],
-  "modified": "2019-11-23 23:45:48.418978",
+  "modified": "2019-11-24 20:31:43.999516",
   "modified_by": "Administrator",
   "module": "Hepsiburadacom",
-  "name": "hepsiburada Order Items",
+  "name": "hepsiburada Order Item",
   "owner": "Administrator",
   "permissions": [
     {
