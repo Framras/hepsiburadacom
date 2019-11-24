@@ -11,18 +11,18 @@ class HepsiburadaConnection:
 
     def connect(self, integration: str, servicemethod: str, service: str, params, servicedata):
         company = frappe.defaults.get_user_default("Company")
-        if frappe.db.get_value("hepsiburadacom Integration Company Settings", company, "enable") == 1:
-            username = frappe.db.get_value("hepsiburadacom Integration Company Settings", company, "username")
-            password = frappe.db.get_value("hepsiburadacom Integration Company Settings", company, "password")
+        if frappe.db.get_value("hepsiburadacom Integration Company Setting", company, "enable") == 1:
+            username = frappe.db.get_value("hepsiburadacom Integration Company Setting", company, "username")
+            password = frappe.db.get_value("hepsiburadacom Integration Company Setting", company, "password")
 
             serviceurl = ""
             if integration == "listing":
-                if frappe.db.get_value("hepsiburadacom Integration Company Settings", company, "usetest") == 0:
+                if frappe.db.get_value("hepsiburadacom Integration Company Setting", company, "usetest") == 0:
                     serviceurl = frappe.db.get_single_value("hepsiburadacom Integration Settings", "list_host")
                 else:
                     serviceurl = frappe.db.get_single_value("hepsiburadacom Integration Settings", "list_testhost")
             if integration == "order":
-                if frappe.db.get_value("hepsiburadacom Integration Company Settings", company, "usetest") == 0:
+                if frappe.db.get_value("hepsiburadacom Integration Company Setting", company, "usetest") == 0:
                     serviceurl = frappe.db.get_single_value("hepsiburadacom Integration Settings", "order_host")
                 else:
                     serviceurl = frappe.db.get_single_value("hepsiburadacom Integration Settings", "order_testhost")

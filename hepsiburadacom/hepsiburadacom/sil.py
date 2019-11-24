@@ -48,18 +48,18 @@ def get_list_of_orders_details(self, offset, limit):
 
 def initiate_hepsiburada_orderitems():
     orderitems = get_list_of_orderitems(None, None)
-    meta = frappe.get_meta("hepsiburada Order Items")
+    meta = frappe.get_meta("hepsiburada Order Item")
     for orderitem in orderitems["items"]:
         # check if record exists by filters
         if not frappe.db.exists({
-            'doctype': 'hepsiburada Order Items',
+            'doctype': 'hepsiburada Order Item',
             'id': orderitem["id"]
         }):
-            newdoc = frappe.new_doc("hepsiburada Order Items")
+            newdoc = frappe.new_doc("hepsiburada Order Item")
             newdoc.id = orderitem["id"]
             newdoc.insert()
 
-        frdoc = frappe.get_doc('hepsiburada Order Items', orderitem["id"])
+        frdoc = frappe.get_doc('hepsiburada Order Item', orderitem["id"])
         for itemkey in orderitem.keys():
             if itemkey == "totalPrice" or \
                     itemkey == "unitPrice" or \
@@ -100,18 +100,18 @@ def initiate_hepsiburada_orderitems():
 def initiate_hepsiburada_orders():
     os = OrdersService()
     orderitems = os.get_list_of_orders_details(None, None)
-    meta = frappe.get_meta("hepsiburada Orders")
+    meta = frappe.get_meta("hepsiburada Order")
     for orderitem in orderitems["items"]:
         # check if record exists by filters
         if not frappe.db.exists({
-            'doctype': 'hepsiburada Orders',
+            'doctype': 'hepsiburada Order',
             'id': str(orderitem["id"])
         }):
-            newdoc = frappe.new_doc("hepsiburada Orders")
+            newdoc = frappe.new_doc("hepsiburada Order")
             newdoc.id = str(orderitem["id"])
             newdoc.insert()
 
-        frdoc = frappe.get_doc('hepsiburada Order Items', str(orderitem["id"]))
+        frdoc = frappe.get_doc('hepsiburada Order Item', str(orderitem["id"]))
         for itemkey in orderitem.keys():
             if itemkey == "shippingAddress":
                 sa = HepsiburadaAddress(orderitem[itemkey], "shipping")

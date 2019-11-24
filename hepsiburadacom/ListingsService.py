@@ -16,7 +16,7 @@ class ListingsService:
 
         servicemethod = "GET"
         servicetemplate = "/merchantid"
-        servicetemplateresource = "/" + frappe.db.get_value("hepsiburadacom Integration Company Settings",
+        servicetemplateresource = "/" + frappe.db.get_value("hepsiburadacom Integration Company Setting",
                                                             self.company, "merchantid")
         service = self.servicepath + servicetemplate + servicetemplateresource
         if offset is None or limit is None:
@@ -34,25 +34,25 @@ class ListingsService:
 def initiate_hepsiburada_listings():
     ls = ListingsService()
     listings = ls.get_list_of_listings(None, None)
-    meta = frappe.get_meta("hepsiburada Listings")
+    meta = frappe.get_meta("hepsiburada Listing")
     for l in listings["listings"]:
         # check if record exists by filters
         if frappe.db.exists({
-            'doctype': 'hepsiburada Listings',
+            'doctype': 'hepsiburada Listing',
             'hepsiburadasku': l["hepsiburadaSku"]
         }):
             pass
         else:
-            newdoc = frappe.new_doc("hepsiburada Listings")
+            newdoc = frappe.new_doc("hepsiburada Listing")
             newdoc.hepsiburadasku = l["hepsiburadaSku"]
             newdoc.company = ls.company
             newdoc.insert()
 
-        frdoc = frappe.get_doc('hepsiburada Listings', l["hepsiburadaSku"])
+        frdoc = frappe.get_doc('hepsiburada Listing', l["hepsiburadaSku"])
         for p in l.keys():
             if meta.has_field(p.lower()):
                 frdoc.db_set(p.lower(), l[p])
 
         frdoc.save()
 
-    return frappe.db.count("hepsiburada Listings", filters={"company": ls.company})
+    return frappe.db.count("hepsiburada Listing", filters={"company": ls.company})
