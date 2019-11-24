@@ -103,5 +103,5 @@ def initiate_hepsiburada_orderitems():
             frdoc.save()
 
     return frappe.db.count("hepsiburada Order Item",
-                           filters={"merchantid": frappe.db.get_value("hepsiburadacom Integration Company Setting",
-                                                                      os.company, "merchantid")}) == totalcount
+                           filters={"merchantid": frappe.db.get_value(os.company_setting_doctype, os.company,
+                                                                      "merchantid")}) == totalcount

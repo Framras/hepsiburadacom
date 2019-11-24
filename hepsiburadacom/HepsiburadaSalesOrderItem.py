@@ -1,14 +1,12 @@
 import frappe
 
 
-class HepsiburadaAddress:
-    def __init__(self, address: dict, address_type: str):
-        self.address = address
-        self.address_type = address_type
-        self.doctype = "Address"
-        self.default_addresstype = "Shipping"
+class HepsiburadaSalesOrderItem:
+    def __init__(self, salesorderitem: dict):
+        self.salesorderitem = salesorderitem
+        self.doctype = "Sales Order Item"
 
-    def use_address(self):
+    def use_salesorder(self):
         # check if record exists by filters
         if not frappe.db.exists({
             "doctype": self.doctype,
@@ -24,7 +22,7 @@ class HepsiburadaAddress:
             newdoc.insert()
 
         frdoc = frappe.get_doc(self.doctype, self.address["addressId"] + "-" + self.default_addresstype)
-        if frdoc.address_type == self.default_addresstype:
+        if self.address_type == self.default_addresstype:
             frdoc.db_set("address_type", "Shipping")
             frdoc.db_set("is_shipping_address", 1)
         elif self.address_type == "Billing":

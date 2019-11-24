@@ -9,6 +9,7 @@
     "integration_warehouse",
     "item_group",
     "stock_uom",
+    "selling_price_list",
     "column_break_3",
     "enable",
     "usetest",
@@ -162,9 +163,15 @@
       "fieldtype": "Link",
       "label": "Default Unit of Measure",
       "options": "UOM"
+    },
+    {
+      "fieldname": "selling_price_list",
+      "fieldtype": "Link",
+      "label": "Default Price List",
+      "options": "Price List"
     }
   ],
-  "modified": "2019-11-24 21:58:01.566350",
+  "modified": "2019-11-25 00:14:04.802673",
   "modified_by": "Administrator",
   "module": "Hepsiburadacom",
   "name": "hepsiburadacom Integration Company Setting",
