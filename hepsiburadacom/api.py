@@ -11,14 +11,14 @@ def check_integration(system, username, password, merchantid):
 
     serviceurl = ""
     if system == "live":
-        serviceurl = frappe.db.get_single_value("hepsiburadacom Integration Settings", "list_host")
+        serviceurl = frappe.db.get_single_value("hepsiburadacom Integration Setting", "list_host")
     elif system == "test":
-        serviceurl = frappe.db.get_single_value("hepsiburadacom Integration Settings", "list_testhost")
+        serviceurl = frappe.db.get_single_value("hepsiburadacom Integration Setting", "list_testhost")
     serviceendpoint = "/listings/merchantid"
     serviceresource = "/" + merchantid
 
     headers = {
-        'Accept': frappe.db.get_single_value("hepsiburadacom Integration Settings", "contenttype")
+        'Accept': frappe.db.get_single_value("hepsiburadacom Integration Setting", "contenttype")
     }
     params = {
         'offset': 0,

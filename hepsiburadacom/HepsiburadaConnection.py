@@ -18,20 +18,20 @@ class HepsiburadaConnection:
             serviceurl = ""
             if integration == "listing":
                 if frappe.db.get_value("hepsiburadacom Integration Company Setting", company, "usetest") == 0:
-                    serviceurl = frappe.db.get_single_value("hepsiburadacom Integration Settings", "list_host")
+                    serviceurl = frappe.db.get_single_value("hepsiburadacom Integration Setting", "list_host")
                 else:
-                    serviceurl = frappe.db.get_single_value("hepsiburadacom Integration Settings", "list_testhost")
+                    serviceurl = frappe.db.get_single_value("hepsiburadacom Integration Setting", "list_testhost")
             if integration == "order":
                 if frappe.db.get_value("hepsiburadacom Integration Company Setting", company, "usetest") == 0:
-                    serviceurl = frappe.db.get_single_value("hepsiburadacom Integration Settings", "order_host")
+                    serviceurl = frappe.db.get_single_value("hepsiburadacom Integration Setting", "order_host")
                 else:
-                    serviceurl = frappe.db.get_single_value("hepsiburadacom Integration Settings", "order_testhost")
+                    serviceurl = frappe.db.get_single_value("hepsiburadacom Integration Setting", "order_testhost")
 
             url = serviceurl + service
             # her web servis çağrısının başlık (header) kısmına utsToken etiketiyle sistem token’ının değerini
             # eklemelidir
             headers = {
-                'Accept': frappe.db.get_single_value("hepsiburadacom Integration Settings", "contenttype")
+                'Accept': frappe.db.get_single_value("hepsiburadacom Integration Setting", "contenttype")
             }
 
             try:
