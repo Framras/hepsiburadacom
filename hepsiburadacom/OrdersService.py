@@ -69,41 +69,42 @@ def initiate_hepsiburada_orderitems():
             newdoc.insert()
 
         frdoc = frappe.get_doc('hepsiburada Order Item', item["id"])
-        for itemkey in item.keys():
-            if itemkey == "shippingAddress":
-                sa = HepsiburadaAddress(item[itemkey], "Shipping")
-                if sa.use_address() and meta.has_field((itemkey + "_" + "addressId").lower()):
-                    frdoc.db_set((itemkey + "_" + "addressId").lower(), item[itemkey]["addressId"])
-            elif itemkey == "totalPrice" or \
-                    itemkey == "unitPrice" or \
-                    itemkey == "commission" or \
-                    itemkey == "cargoCompanyModel":
-                for ikey in item[itemkey].keys():
-                    if meta.has_field((itemkey + "_" + ikey).lower()):
-                        frdoc.db_set((itemkey + "_" + ikey).lower(), item[itemkey][ikey])
-            elif itemkey == "hbDiscount":
-                for ikey in item[itemkey].keys():
-                    if ikey == "totalPrice" or \
-                            ikey == "unitPrice":
-                        for skey in item[itemkey][ikey].keys():
-                            if meta.has_field((itemkey + "_" + ikey + "_" + skey).lower()):
-                                frdoc.db_set(
-                                    (itemkey + "_" + ikey + "_" + skey).lower(), item[itemkey][ikey][skey])
-            elif itemkey == "invoice":
-                for ikey in item[itemkey].keys():
-                    if ikey == "address":
-                        sa = HepsiburadaAddress(item[itemkey][ikey], "Billing")
-                        if sa.use_address() and meta.has_field((itemkey + "_" + ikey + "_" + "addressId").lower()):
-                            frdoc.db_set((itemkey + "_" + ikey + "_" + "addressId").lower(),
-                                         item[itemkey][ikey]["addressId"])
-                    else:
+        if item["lastStatusUpdateDate"] != frdoc.laststatusupdatedate:
+            for itemkey in item.keys():
+                if itemkey == "shippingAddress":
+                    sa = HepsiburadaAddress(item[itemkey], "Shipping")
+                    if sa.use_address() and meta.has_field((itemkey + "_" + "addressId").lower()):
+                        frdoc.db_set((itemkey + "_" + "addressId").lower(), item[itemkey]["addressId"])
+                elif itemkey == "totalPrice" or \
+                        itemkey == "unitPrice" or \
+                        itemkey == "commission" or \
+                        itemkey == "cargoCompanyModel":
+                    for ikey in item[itemkey].keys():
                         if meta.has_field((itemkey + "_" + ikey).lower()):
                             frdoc.db_set((itemkey + "_" + ikey).lower(), item[itemkey][ikey])
-            else:
-                if meta.has_field(itemkey.lower()):
-                    frdoc.db_set(itemkey.lower(), item[itemkey])
+                elif itemkey == "hbDiscount":
+                    for ikey in item[itemkey].keys():
+                        if ikey == "totalPrice" or \
+                                ikey == "unitPrice":
+                            for skey in item[itemkey][ikey].keys():
+                                if meta.has_field((itemkey + "_" + ikey + "_" + skey).lower()):
+                                    frdoc.db_set(
+                                        (itemkey + "_" + ikey + "_" + skey).lower(), item[itemkey][ikey][skey])
+                elif itemkey == "invoice":
+                    for ikey in item[itemkey].keys():
+                        if ikey == "address":
+                            sa = HepsiburadaAddress(item[itemkey][ikey], "Billing")
+                            if sa.use_address() and meta.has_field((itemkey + "_" + ikey + "_" + "addressId").lower()):
+                                frdoc.db_set((itemkey + "_" + ikey + "_" + "addressId").lower(),
+                                             item[itemkey][ikey]["addressId"])
+                        else:
+                            if meta.has_field((itemkey + "_" + ikey).lower()):
+                                frdoc.db_set((itemkey + "_" + ikey).lower(), item[itemkey][ikey])
+                else:
+                    if meta.has_field(itemkey.lower()):
+                        frdoc.db_set(itemkey.lower(), item[itemkey])
 
-        frdoc.save()
+            frdoc.save()
 
     return frappe.db.count("hepsiburada Order Item",
                            filters={"merchantid": frappe.db.get_value("hepsiburadacom Integration Company Setting",
