@@ -24,13 +24,13 @@ class HepsiburadaAddress:
             newdoc.insert()
 
         frdoc = frappe.get_doc(self.doctype, self.address["addressId"] + "-" + self.default_addresstype)
-        if self.address_type == "Shipping":
+        if self.address_type == self.default_addresstype:
             frdoc.db_set("address_type", "Shipping")
             frdoc.db_set("is_shipping_address", 1)
         elif self.address_type == "Billing":
             if frdoc.address_type != self.default_addresstype:
                 frdoc.db_set("address_type", "Billing")
-            frdoc.db_set("is_primary_address", 1)
+                frdoc.db_set("is_primary_address", 1)
         frdoc.db_set("address_line1", self.address["address"])
         frdoc.db_set("address_line2", self.address["district"] + "/" + self.address["town"])
         frdoc.db_set("country", frappe.get_value("Country", filters={'code': self.address["countryCode"]},
