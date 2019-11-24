@@ -23,8 +23,8 @@ class ListingsService:
             params = None
         else:
             params = {
-                'offset': offset,
-                'limit': limit
+                "offset": offset,
+                "limit": limit
             }
 
         return self.hepsiburadaconnection.connect(self.integration, servicemethod, service, params, servicedata=None)
@@ -34,25 +34,45 @@ class ListingsService:
 def initiate_hepsiburada_listings():
     ls = ListingsService()
     listings = ls.get_list_of_listings(None, None)
+    totalcount = listings["totalCount"]
     meta = frappe.get_meta("hepsiburada Listing")
     for l in listings["listings"]:
         # check if record exists by filters
-        if frappe.db.exists({
-            'doctype': 'hepsiburada Listing',
-            'hepsiburadasku': l["hepsiburadaSku"]
+        if not frappe.db.exists({
+            "doctype": 'hepsiburada Listing',
+            "hepsiburadasku": l["hepsiburadaSku"],
+            "company": ls.company
         }):
-            pass
-        else:
             newdoc = frappe.new_doc("hepsiburada Listing")
             newdoc.hepsiburadasku = l["hepsiburadaSku"]
             newdoc.company = ls.company
             newdoc.insert()
 
         frdoc = frappe.get_doc('hepsiburada Listing', l["hepsiburadaSku"])
+        # "deactivationReasons": [
+        #     "PriceIsLessThanOrEqualToZero",
+        #     "StockIsLessThanOrEqualToZero",
+        #     "PriceIsLessThanThreshold"
+        # ],
+        # "lockReasons": [],
         for p in l.keys():
             if meta.has_field(p.lower()):
                 frdoc.db_set(p.lower(), l[p])
 
         frdoc.save()
 
-    return frappe.db.count("hepsiburada Listing", filters={"company": ls.company})
+        # check if record exists by filters
+        if not frappe.db.exists({
+            "doctype": 'Item',
+            "item_code": l["merchantSku"]
+        }):
+            newdoc = frappe.new_doc("Item")
+            newdoc.item_code = l["merchantSku"]
+            newdoc.is_sales_item = True
+            newdoc.item_group = frappe.db.get_value("hepsiburadacom Integration Company Setting", ls.company,
+                                                    "item_group")
+            newdoc.stock_uom = frappe.db.get_value("hepsiburadacom Integration Company Setting", ls.company,
+                                                   "stock_uom")
+            newdoc.insert()
+
+    return frappe.db.count("hepsiburada Listing", filters={"company": ls.company}) == totalcount

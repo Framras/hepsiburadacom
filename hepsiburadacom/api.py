@@ -21,8 +21,8 @@ def check_integration(system, username, password, merchantid):
         'Accept': frappe.db.get_single_value("hepsiburadacom Integration Setting", "contenttype")
     }
     params = {
-        'offset': 0,
-        'limit': 1
+        "offset": 0,
+        "limit": 1
     }
 
     servicestatus = ''

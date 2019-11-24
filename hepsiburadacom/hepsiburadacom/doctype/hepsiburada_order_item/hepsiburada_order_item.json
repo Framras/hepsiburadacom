@@ -412,11 +412,9 @@
       "label": "Shipping Address"
     },
     {
-      "fetch_from": "address.address_title",
       "fieldname": "shippingaddress_addressid",
-      "fieldtype": "Link",
+      "fieldtype": "Data",
       "label": "Address ID",
-      "options": "Address",
       "read_only": 1
     },
     {
@@ -434,11 +432,9 @@
       "read_only": 1
     },
     {
-      "fetch_from": "address.address_title",
       "fieldname": "invoice_address_addressid",
-      "fieldtype": "Link",
+      "fieldtype": "Data",
       "label": "Address ID",
-      "options": "Address",
       "read_only": 1
     },
     {
@@ -574,7 +570,7 @@
       "fieldtype": "Column Break"
     }
   ],
-  "modified": "2019-11-24 20:41:33.546097",
+  "modified": "2019-11-24 21:05:48.120588",
   "modified_by": "Administrator",
   "module": "Hepsiburadacom",
   "name": "hepsiburada Order Item",

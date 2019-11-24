@@ -23,8 +23,8 @@ def get_list_of_orderitems(self, offset, limit):
         params = None
     else:
         params = {
-            'offset': offset,
-            'limit': limit
+            "offset": offset,
+            "limit": limit
         }
 
     return self.hepsiburadaconnection.connect(self.integration, servicemethod, service, params, servicedata=None)
@@ -39,8 +39,8 @@ def get_list_of_orders_details(self, offset, limit):
         params = None
     else:
         params = {
-            'offset': offset,
-            'limit': limit
+            "offset": offset,
+            "limit": limit
         }
 
     return self.hepsiburadaconnection.connect(self.integration, servicemethod, service, params, servicedata=None)
@@ -52,8 +52,8 @@ def initiate_hepsiburada_orderitems():
     for orderitem in orderitems["items"]:
         # check if record exists by filters
         if not frappe.db.exists({
-            'doctype': 'hepsiburada Order Item',
-            'id': orderitem["id"]
+            "doctype": 'hepsiburada Order Item',
+            "id": orderitem["id"]
         }):
             newdoc = frappe.new_doc("hepsiburada Order Item")
             newdoc.id = orderitem["id"]
@@ -104,8 +104,8 @@ def initiate_hepsiburada_orders():
     for orderitem in orderitems["items"]:
         # check if record exists by filters
         if not frappe.db.exists({
-            'doctype': 'hepsiburada Order',
-            'id': str(orderitem["id"])
+            "doctype": 'hepsiburada Order',
+            "id": str(orderitem["id"])
         }):
             newdoc = frappe.new_doc("hepsiburada Order")
             newdoc.id = str(orderitem["id"])

@@ -31,7 +31,8 @@
       "fieldname": "company",
       "fieldtype": "Link",
       "label": "Company",
-      "options": "Company"
+      "options": "Company",
+      "read_only": 1
     },
     {
       "fieldname": "hepsiburadasku",
@@ -43,90 +44,107 @@
     {
       "fieldname": "merchantsku",
       "fieldtype": "Data",
-      "label": "MerchantSku"
+      "label": "MerchantSku",
+      "read_only": 1
     },
     {
       "fieldname": "price",
       "fieldtype": "Data",
-      "label": "Price"
+      "label": "Price",
+      "read_only": 1
     },
     {
       "fieldname": "availablestock",
       "fieldtype": "Data",
-      "label": "AvailableStock"
+      "label": "AvailableStock",
+      "read_only": 1
     },
     {
       "fieldname": "dispatchtime",
       "fieldtype": "Data",
-      "label": "DispatchTime"
+      "label": "DispatchTime",
+      "read_only": 1
     },
     {
       "fieldname": "cargocompany1",
       "fieldtype": "Data",
-      "label": "CargoCompany1"
+      "label": "CargoCompany1",
+      "read_only": 1
     },
     {
       "fieldname": "cargocompany2",
       "fieldtype": "Data",
-      "label": "CargoCompany2"
+      "label": "CargoCompany2",
+      "read_only": 1
     },
     {
       "fieldname": "cargocompany3",
       "fieldtype": "Data",
-      "label": "CargoCompany3"
+      "label": "CargoCompany3",
+      "read_only": 1
     },
     {
       "fieldname": "shippingaddresslabel",
       "fieldtype": "Data",
-      "label": "ShippingAddressLabel"
+      "label": "ShippingAddressLabel",
+      "read_only": 1
     },
     {
       "fieldname": "claimaddresslabel",
       "fieldtype": "Data",
-      "label": "ClaimAddressLabel"
+      "label": "ClaimAddressLabel",
+      "read_only": 1
     },
     {
       "fieldname": "maximumpurchasablequantity",
       "fieldtype": "Data",
-      "label": "MaximumPurchasableQuantity"
+      "label": "MaximumPurchasableQuantity",
+      "read_only": 1
     },
     {
       "default": "0",
       "fieldname": "issalable",
       "fieldtype": "Check",
-      "label": "IsSalable"
+      "label": "IsSalable",
+      "read_only": 1
     },
     {
       "default": "0",
       "fieldname": "issuspended",
       "fieldtype": "Check",
-      "label": "IsSuspended"
+      "label": "IsSuspended",
+      "read_only": 1
     },
     {
       "default": "0",
       "fieldname": "islocked",
       "fieldtype": "Check",
-      "label": "IsLocked"
+      "label": "IsLocked",
+      "read_only": 1
     },
     {
       "fieldname": "isfrozen",
       "fieldtype": "Data",
-      "label": "IsFrozen"
+      "label": "IsFrozen",
+      "read_only": 1
     },
     {
       "fieldname": "commissionrate",
       "fieldtype": "Data",
-      "label": "CommissionRate"
+      "label": "CommissionRate",
+      "read_only": 1
     },
     {
       "fieldname": "buyboxorder",
       "fieldtype": "Data",
-      "label": "BuyboxOrder"
+      "label": "BuyboxOrder",
+      "read_only": 1
     },
     {
       "fieldname": "minimumpurchasablequantity",
       "fieldtype": "Data",
-      "label": "MinimumPurchasableQuantity"
+      "label": "MinimumPurchasableQuantity",
+      "read_only": 1
     },
     {
       "fieldname": "uniqueidentifier",
@@ -135,7 +153,7 @@
       "read_only": 1
     }
   ],
-  "modified": "2019-11-24 20:31:56.601173",
+  "modified": "2019-11-24 21:34:16.988156",
   "modified_by": "Administrator",
   "module": "Hepsiburadacom",
   "name": "hepsiburada Listing",

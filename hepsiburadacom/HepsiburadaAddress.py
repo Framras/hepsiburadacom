@@ -11,7 +11,7 @@ class HepsiburadaAddress:
     def use_address(self):
         # check if record exists by filters
         if not frappe.db.exists({
-            'doctype': self.doctype,
+            "doctype": self.doctype,
             'address_title': self.address["addressId"]
         }):
             newdoc = frappe.new_doc(self.doctype)
@@ -46,6 +46,6 @@ class HepsiburadaAddress:
         frdoc.save()
 
         return frappe.db.exists({
-            'doctype': self.doctype,
+            "doctype": self.doctype,
             'address_title': self.address["addressId"]
         })
