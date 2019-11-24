@@ -67,12 +67,17 @@ def initiate_hepsiburada_listings():
             "item_code": l["merchantSku"]
         }):
             newdoc = frappe.new_doc("Item")
+            # required
             newdoc.item_code = l["merchantSku"]
-            newdoc.is_sales_item = True
             newdoc.item_group = frappe.db.get_value("hepsiburadacom Integration Company Setting", ls.company,
                                                     "item_group")
             newdoc.stock_uom = frappe.db.get_value("hepsiburadacom Integration Company Setting", ls.company,
                                                    "stock_uom")
+            # optional
+            newdoc.is_sales_item = 1
+            newdoc.include_item_in_manufacturing = 0
+            newdoc.is_stock_item = 1
+
             newdoc.insert()
 
     return frappe.db.count("hepsiburada Listing", filters={"company": ls.company}) == totalcount

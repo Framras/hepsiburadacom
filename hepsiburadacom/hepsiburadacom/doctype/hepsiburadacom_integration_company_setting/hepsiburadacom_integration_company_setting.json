@@ -7,6 +7,8 @@
   "field_order": [
     "company",
     "integration_warehouse",
+    "item_group",
+    "stock_uom",
     "column_break_3",
     "enable",
     "usetest",
@@ -148,9 +150,21 @@
     {
       "fieldname": "column_break_18",
       "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "item_group",
+      "fieldtype": "Link",
+      "label": "Integration Default Item Group",
+      "options": "Item Group"
+    },
+    {
+      "fieldname": "stock_uom",
+      "fieldtype": "Link",
+      "label": "Default Unit of Measure",
+      "options": "UOM"
     }
   ],
-  "modified": "2019-11-24 18:43:19.954579",
+  "modified": "2019-11-24 21:58:01.566350",
   "modified_by": "Administrator",
   "module": "Hepsiburadacom",
   "name": "hepsiburadacom Integration Company Setting",
