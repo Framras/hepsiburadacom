@@ -39,10 +39,6 @@ class HepsiburadaAddress:
         frdoc.db_set("city", self.address["city"])
         frdoc.db_set("email_id", self.address["email"])
 
-        meta = frappe.get_meta(self.doctype)
-        for addresskey in ["alternatePhoneNumber", "name"]:
-            if meta.has_field("hepsiburada_" + addresskey.lower()):
-                frdoc.db_set("hepsiburada_" + addresskey.lower(), self.address[addresskey])
         frdoc.save()
 
         return frappe.db.exists({

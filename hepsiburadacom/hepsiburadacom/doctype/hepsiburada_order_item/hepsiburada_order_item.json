@@ -45,8 +45,12 @@
     "commission_currency",
     "shippingaddress_section",
     "shippingaddress_addressid",
+    "shippingaddress_alternatephonenumber",
+    "shippingaddress_name",
     "invoiceaddress_section",
     "invoice_address_addressid",
+    "invoice_address_alternatephonenumber",
+    "invoice_address_name",
     "invoice_section",
     "invoice_turkishidentitynumber",
     "invoice_taxnumber",
@@ -568,9 +572,29 @@
     {
       "fieldname": "column_break_81",
       "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "shippingaddress_alternatephonenumber",
+      "fieldtype": "Data",
+      "label": "Alternate Phone Number"
+    },
+    {
+      "fieldname": "shippingaddress_name",
+      "fieldtype": "Data",
+      "label": "Name"
+    },
+    {
+      "fieldname": "invoice_address_alternatephonenumber",
+      "fieldtype": "Data",
+      "label": "Alternate Phone Number"
+    },
+    {
+      "fieldname": "invoice_address_name",
+      "fieldtype": "Data",
+      "label": "Name"
     }
   ],
-  "modified": "2019-11-24 21:05:48.120588",
+  "modified": "2019-11-24 23:11:13.061649",
   "modified_by": "Administrator",
   "module": "Hepsiburadacom",
   "name": "hepsiburada Order Item",

@@ -8,28 +8,30 @@ import json
 class HepsiburadaConnection:
     def __init__(self):
         self._s = requests.Session()
+        self.integration_setting_doctype = "hepsiburadacom Integration Setting"
+        self.company_setting_doctype = "hepsiburadacom Integration Company Setting"
         # Başlık(Header)
         self.headers = {
-            'Accept': frappe.db.get_single_value("hepsiburadacom Integration Setting", "contenttype")
+            'Accept': frappe.db.get_single_value(self.integration_setting_doctype, "contenttype")
         }
 
     def connect(self, integration: str, servicemethod: str, service: str, params, servicedata):
         company = frappe.defaults.get_user_default("Company")
-        if frappe.db.get_value("hepsiburadacom Integration Company Setting", company, "enable") == 1:
-            username = frappe.db.get_value("hepsiburadacom Integration Company Setting", company, "username")
-            password = frappe.db.get_value("hepsiburadacom Integration Company Setting", company, "password")
+        if frappe.db.get_value(self.company_setting_doctype, company, "enable") == 1:
+            username = frappe.db.get_value(self.company_setting_doctype, company, "username")
+            password = frappe.db.get_value(self.company_setting_doctype, company, "password")
 
             serviceurl = ""
             if integration == "listing":
-                if frappe.db.get_value("hepsiburadacom Integration Company Setting", company, "usetest") == 0:
-                    serviceurl = frappe.db.get_single_value("hepsiburadacom Integration Setting", "list_host")
+                if frappe.db.get_value(self.company_setting_doctype, company, "usetest") == 0:
+                    serviceurl = frappe.db.get_single_value(self.integration_setting_doctype, "list_host")
                 else:
-                    serviceurl = frappe.db.get_single_value("hepsiburadacom Integration Setting", "list_testhost")
+                    serviceurl = frappe.db.get_single_value(self.integration_setting_doctype, "list_testhost")
             if integration == "order":
-                if frappe.db.get_value("hepsiburadacom Integration Company Setting", company, "usetest") == 0:
-                    serviceurl = frappe.db.get_single_value("hepsiburadacom Integration Setting", "order_host")
+                if frappe.db.get_value(self.company_setting_doctype, company, "usetest") == 0:
+                    serviceurl = frappe.db.get_single_value(self.integration_setting_doctype, "order_host")
                 else:
-                    serviceurl = frappe.db.get_single_value("hepsiburadacom Integration Setting", "order_testhost")
+                    serviceurl = frappe.db.get_single_value(self.integration_setting_doctype, "order_testhost")
 
             url = serviceurl + service
 
