@@ -50,7 +50,7 @@ class HepsiburadaOrdersService:
                                                               "merchantid") + "/ordernumber/" + ordernumber
         service = self.service_path + service_template + service_template_resource
 
-        return self.hepsiburada_connection.connect(self.integration, service_method, service, parameters=None,
+        return self.hepsiburada_connection.connect(self.integration, service_method, service, params=None,
                                                    servicedata=None)
 
     def process_order_items(self):
@@ -125,9 +125,9 @@ class HepsiburadaOrdersService:
                 ls = HepsiburadaListingsService()
             # if sku does not exist, process all listings
             if ls.process_listings():
-                hb_listing_doc = frappe.get_doc(self.listing_doctype,
+                hb_listing_doc = frappe.get_doc(doctype=self.listing_doctype,
                                                 filters={"hepsiburadasku": hb_order_item["sku"]})
-                item_doc = frappe.get_doc(self.item_doctype, filters={"item_code": hb_listing_doc.merchantsku})
+                item_doc = frappe.get_doc(doctype=self.item_doctype, filters={"item_code": hb_listing_doc.merchantsku})
             else:
                 # should be error
                 pass
@@ -145,33 +145,32 @@ class HepsiburadaOrdersService:
     def process_orders_details(self, order_number):
         hb_orders_detail = self.get_list_of_orders_details(order_number)
         meta = frappe.get_meta(self.detail_doctype)
-        for hb_order_detail in hb_orders_detail:
-            if self.check_orders_detail_doctype(order_number):
-                hb_order_detail_doc = frappe.get_doc(self.detail_doctype, order_number)
-            else:
-                # should be error
-                pass
-            for hb_order_detail_key in hb_order_detail.keys():
-                if hb_order_detail_key == "customer":
-                    hbc = HepsiburadaCustomer(hb_order_detail[hb_order_detail_key], self.customer_type,
-                                              self.customer_tax_id)
-                    if hbc.use_customer():
-                        for key in hb_order_detail[hb_order_detail_key]:
-                            if meta.has_field((hb_order_detail_key + "_" + key).lower()):
-                                hb_order_detail_doc.db_set((hb_order_detail_key + "_" + key).lower(),
-                                                           hb_order_detail[hb_order_detail_key][key])
-                    customer_doc = frappe.get_doc(self.customer_doctype, filters={
-                        "customer_name": hb_order_detail[hb_order_detail_key]["name"]})
-                if hb_order_detail_key == "invoice":
-                    for key in hb_order_detail[hb_order_detail_key]:
+        if self.check_orders_detail_doctype(order_number):
+            hb_order_detail_doc = frappe.get_doc(self.detail_doctype, order_number)
+        else:
+            # should be error
+            pass
+        for hb_order_detail_key in hb_orders_detail.keys():
+            if hb_order_detail_key == "customer":
+                hbc = HepsiburadaCustomer(hb_orders_detail[hb_order_detail_key], self.customer_type,
+                                          self.customer_tax_id)
+                if hbc.use_customer():
+                    for key in hb_orders_detail[hb_order_detail_key]:
                         if meta.has_field((hb_order_detail_key + "_" + key).lower()):
                             hb_order_detail_doc.db_set((hb_order_detail_key + "_" + key).lower(),
-                                                       hb_order_detail[hb_order_detail_key][key])
-                if hb_order_detail_key == "deliveryAddress":
-                    for key in hb_order_detail[hb_order_detail_key]:
-                        if meta.has_field((hb_order_detail_key + "_" + key).lower()):
-                            hb_order_detail_doc.db_set((hb_order_detail_key + "_" + key).lower(),
-                                                       hb_order_detail[hb_order_detail_key][key])
+                                                       hb_orders_detail[hb_order_detail_key][key])
+                customer_doc = frappe.get_doc(doctype=self.customer_doctype, filters={
+                    "customer_name": hb_orders_detail[hb_order_detail_key]["name"]})
+            if hb_order_detail_key == "invoice":
+                for key in hb_orders_detail[hb_order_detail_key]:
+                    if meta.has_field((hb_order_detail_key + "_" + key).lower()):
+                        hb_order_detail_doc.db_set((hb_order_detail_key + "_" + key).lower(),
+                                                   hb_orders_detail[hb_order_detail_key][key])
+            if hb_order_detail_key == "deliveryAddress":
+                for key in hb_orders_detail[hb_order_detail_key]:
+                    if meta.has_field((hb_order_detail_key + "_" + key).lower()):
+                        hb_order_detail_doc.db_set((hb_order_detail_key + "_" + key).lower(),
+                                                   hb_orders_detail[hb_order_detail_key][key])
 
     def check_order_item_doctype(self, filter_id):
         # check if record exists by filters
@@ -191,12 +190,12 @@ class HepsiburadaOrdersService:
         # check if record exists by filters
         if not frappe.db.exists({
             "doctype": self.detail_doctype,
-            "id": filter_id
+            "ordernumber": filter_id
         }):
             new_hb_order_item_doc = frappe.new_doc(self.detail_doctype)
-            new_hb_order_item_doc.id = filter_id
+            new_hb_order_item_doc.ordernumber = filter_id
             new_hb_order_item_doc.insert()
         return frappe.db.exists({
-            "doctype": self.doctype,
-            "id": filter_id
+            "doctype": self.detail_doctype,
+            "ordernumber": filter_id
         })
