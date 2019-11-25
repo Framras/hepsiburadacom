@@ -8,14 +8,15 @@ class ListingsService:
         self.servicepath = "/listings"
         self.integration = "listing"
         self.company = frappe.defaults.get_user_default("Company")
+        self.doctype = "hepsiburada Listing"
+        self.company_setting_doctype = "hepsiburadacom Integration Company Setting"
 
     # Satıcıya Ait Listing Bilgilerini Listeleme (Get List of Listings [GET])
     # Bu metod satıcıya ait listing bilgilerine ulaşmanıza olanak tanır.
     def get_list_of_listings(self, offset, limit):
         servicemethod = "GET"
         servicetemplate = "/merchantid"
-        servicetemplateresource = "/" + frappe.db.get_value("hepsiburadacom Integration Company Setting",
-                                                            self.company, "merchantid")
+        servicetemplateresource = "/" + frappe.db.get_value(self.company_setting_doctype, self.company, "merchantid")
         service = self.servicepath + servicetemplate + servicetemplateresource
         # Parametreler(Parameters)
         if offset is None or limit is None:
@@ -35,20 +36,20 @@ def initiate_hepsiburada_listings():
     ls = ListingsService()
     listings = ls.get_list_of_listings(None, None)
     totalcount = listings["totalCount"]
-    meta = frappe.get_meta("hepsiburada Listing")
+    meta = frappe.get_meta(ls.doctype)
     for l in listings["listings"]:
         # check if record exists by filters
         if not frappe.db.exists({
-            "doctype": 'hepsiburada Listing',
+            "doctype": ls.doctype,
             "hepsiburadasku": l["hepsiburadaSku"],
             "company": ls.company
         }):
-            newdoc = frappe.new_doc("hepsiburada Listing")
+            newdoc = frappe.new_doc(ls.doctype)
             newdoc.hepsiburadasku = l["hepsiburadaSku"]
             newdoc.company = ls.company
             newdoc.insert()
 
-        frdoc = frappe.get_doc('hepsiburada Listing', l["hepsiburadaSku"])
+        frdoc = frappe.get_doc(ls.doctype, l["hepsiburadaSku"])
         # "deactivationReasons": [
         #     "PriceIsLessThanOrEqualToZero",
         #     "StockIsLessThanOrEqualToZero",
@@ -69,10 +70,8 @@ def initiate_hepsiburada_listings():
             newdoc = frappe.new_doc("Item")
             # required fields
             newdoc.item_code = l["merchantSku"]
-            newdoc.item_group = frappe.db.get_value("hepsiburadacom Integration Company Setting", ls.company,
-                                                    "item_group")
-            newdoc.stock_uom = frappe.db.get_value("hepsiburadacom Integration Company Setting", ls.company,
-                                                   "stock_uom")
+            newdoc.item_group = frappe.db.get_value(ls.company_setting_doctype, ls.company, "item_group")
+            newdoc.stock_uom = frappe.db.get_value(ls.company_setting_doctype, ls.company, "stock_uom")
             # optional fields
             newdoc.is_sales_item = 1
             newdoc.include_item_in_manufacturing = 0
@@ -80,4 +79,4 @@ def initiate_hepsiburada_listings():
 
             newdoc.insert()
 
-    return frappe.db.count("hepsiburada Listing", filters={"company": ls.company}) == totalcount
+    return frappe.db.count(ls.doctype, filters={"company": ls.company}) == totalcount
