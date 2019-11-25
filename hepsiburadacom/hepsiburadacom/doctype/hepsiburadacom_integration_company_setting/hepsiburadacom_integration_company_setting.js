@@ -39,7 +39,7 @@ frappe.ui.form.on('hepsiburadacom Integration Company Setting', {
 	},
 	initiate_listings: function(frm){
         frappe.call({
-            method: "hepsiburadacom.ListingsService.initiate_hepsiburada_listings",
+            method: "hepsiburadacom.api.initiate_hepsiburada_listings",
             callback: function(r){
                 frm.set_value("initiate_listingsresult", r.message)
             }
@@ -47,7 +47,7 @@ frappe.ui.form.on('hepsiburadacom Integration Company Setting', {
     },
 	initiate_orderitems: function(frm){
         frappe.call({
-            method: "hepsiburadacom.OrdersService.initiate_hepsiburada_orderitems",
+            method: "hepsiburadacom.api.initiate_hepsiburada_orderitems",
             callback: function(r){
                 frm.set_value("initiate_orderitemsresult", r.message)
             }

@@ -1,25 +1,32 @@
 import frappe
 from hepsiburadacom.HepsiburadaConnection import HepsiburadaConnection
 from hepsiburadacom.HepsiburadaAddress import HepsiburadaAddress
+from hepsiburadacom.HepsiburadaListingsService import HepsiburadaListingsService
+from hepsiburadacom.HepsiburadaCustomer import HepsiburadaCustomer
 
 
 class HepsiburadaOrdersService:
     def __init__(self):
-        self.hepsiburadaconnection = HepsiburadaConnection()
-        self.servicepath = "/orders"
+        self.hepsiburada_connection = HepsiburadaConnection()
+        self.service_path = "/orders"
         self.integration = "order"
         self.company = frappe.defaults.get_user_default("Company")
         self.doctype = "hepsiburada Order Item"
+        self.customer_doctype = "Customer"
         self.detail_doctype = "hepsiburada Order Detail"
+        self.item_doctype = "Item"
+        self.listing_doctype = "hepsiburada Listing"
         self.company_setting_doctype = "hepsiburadacom Integration Company Setting"
+        self.customer_type = ''
+        self.customer_tax_id = ''
 
     # Ödemesi Tamamlanmış Siparişleri Listeleme (Get List of Orders [GET])
     # Bu metod ödemesi tamamlanmış yeni siparişleri (new orders) listeleyebilmenize olanak tanır.
-    def get_list_of_orderitems(self, offset, limit):
-        servicemethod = "GET"
-        servicetemplate = "/merchantid"
-        servicetemplateresource = "/" + frappe.db.get_value(self.company_setting_doctype, self.company, "merchantid")
-        service = self.servicepath + servicetemplate + servicetemplateresource
+    def get_list_of_order_items(self, offset, limit):
+        service_method = "GET"
+        service_template = "/merchantid"
+        service_template_resource = "/" + frappe.db.get_value(self.company_setting_doctype, self.company, "merchantid")
+        service = self.service_path + service_template + service_template_resource
         # Parametreler(Parameters)
         if offset is None or limit is None:
             parameters = None
@@ -29,113 +36,167 @@ class HepsiburadaOrdersService:
                 "limit": limit
             }
 
-        return self.hepsiburadaconnection.connect(self.integration, servicemethod, service, parameters,
-                                                  servicedata=None)
+        return self.hepsiburada_connection.connect(self.integration, service_method, service, parameters,
+                                                   servicedata=None)
 
     # Siparişe Ait Detay Bilgilerini Listeleme (Get List of Orders Details [GET])
     # Bu metod bir siparişe ait kalemlerin detaylarını listelemeize olanak tanır.
     def get_list_of_orders_details(self, ordernumber: int):
-        servicemethod = "GET"
-        servicetemplate = "/merchantid"
+        service_method = "GET"
+        service_template = "/merchantid"
         # Merchantid (gerekli, guid, b2910839-83b9-4d45-adb6-86bad457edcb) Her satıcının unique bir tanımlayıcısıdır.
         # Ordernumber (gerekli, int, 004563585) Her siparişin unique bir tanımlayıcısıdır.
-        servicetemplateresource = "/" + frappe.db.get_value(self.company_setting_doctype, self.company,
-                                                            "merchantid") + "/ordernumber/" + ordernumber
-        service = self.servicepath + servicetemplate + servicetemplateresource
+        service_template_resource = "/" + frappe.db.get_value(self.company_setting_doctype, self.company,
+                                                              "merchantid") + "/ordernumber/" + ordernumber
+        service = self.service_path + service_template + service_template_resource
 
-        return self.hepsiburadaconnection.connect(self.integration, servicemethod, service, parameters,
-                                                  servicedata=None)
+        return self.hepsiburada_connection.connect(self.integration, service_method, service, parameters=None,
+                                                   servicedata=None)
 
+    def process_order_items(self):
+        hb_order_items = self.get_list_of_order_items(None, None)
+        total_count = hb_order_items["totalCount"]
+        meta = frappe.get_meta(self.doctype)
+        for hb_order_item in hb_order_items["items"]:
+            if self.check_order_item_doctype(hb_order_item["id"]):
+                hb_order_item_doc = frappe.get_doc(self.doctype, hb_order_item["id"])
+            else:
+                # should be error
+                pass
+            if hb_order_item["lastStatusUpdateDate"] != hb_order_item_doc.laststatusupdatedate:
+                for hb_order_item_key in hb_order_item.keys():
+                    if hb_order_item_key == "shippingAddress":
+                        sa = HepsiburadaAddress(hb_order_item[hb_order_item_key], "Shipping")
+                        if sa.use_address():
+                            for key in ["addressId", "alternatePhoneNumber", "name"]:
+                                hb_order_item_doc.db_set((hb_order_item_key + "_" + key).lower(),
+                                                         hb_order_item[hb_order_item_key][key])
+                    elif hb_order_item_key == "totalPrice" or \
+                            hb_order_item_key == "unitPrice" or \
+                            hb_order_item_key == "commission" or \
+                            hb_order_item_key == "cargoCompanyModel":
+                        for ikey in hb_order_item[hb_order_item_key].keys():
+                            if meta.has_field((hb_order_item_key + "_" + ikey).lower()):
+                                hb_order_item_doc.db_set((hb_order_item_key + "_" + ikey).lower(),
+                                                         hb_order_item[hb_order_item_key][ikey])
+                    elif hb_order_item_key == "hbDiscount":
+                        for ikey in hb_order_item[hb_order_item_key].keys():
+                            if ikey == "totalPrice" or \
+                                    ikey == "unitPrice":
+                                for skey in hb_order_item[hb_order_item_key][ikey].keys():
+                                    if meta.has_field((hb_order_item_key + "_" + ikey + "_" + skey).lower()):
+                                        hb_order_item_doc.db_set(
+                                            (hb_order_item_key + "_" + ikey + "_" + skey).lower(),
+                                            hb_order_item[hb_order_item_key][ikey][skey])
+                    elif hb_order_item_key == "invoice":
+                        for ikey in hb_order_item[hb_order_item_key].keys():
+                            if ikey == "address":
+                                sa = HepsiburadaAddress(hb_order_item[hb_order_item_key][ikey], "Billing")
+                                if sa.use_address():
+                                    for key in ["addressId", "alternatePhoneNumber", "name"]:
+                                        hb_order_item_doc.db_set(
+                                            (hb_order_item_key + "_" + ikey + "_" + key).lower(),
+                                            hb_order_item[hb_order_item_key][ikey][key])
+                            else:
+                                if meta.has_field((hb_order_item_key + "_" + ikey).lower()):
+                                    hb_order_item_doc.db_set((hb_order_item_key + "_" + ikey).lower(),
+                                                             hb_order_item[hb_order_item_key][ikey])
+                            # post CRUD process inspection
+                            if ikey == "turkishIdentityNumber":
+                                if hb_order_item[hb_order_item_key][ikey] != "" or \
+                                        hb_order_item[hb_order_item_key][ikey] is not None:
+                                    self.customer_type = "Individual"
+                                    self.customer_tax_id = hb_order_item[hb_order_item_key][ikey]
+                            if ikey == "taxNumber":
+                                if hb_order_item[hb_order_item_key][ikey] != "" or \
+                                        hb_order_item[hb_order_item_key][ikey] is not None:
+                                    self.customer_type = "Company"
+                                    self.customer_tax_id = hb_order_item[hb_order_item_key][ikey]
+                    else:
+                        if meta.has_field(hb_order_item_key.lower()):
+                            hb_order_item_doc.db_set(hb_order_item_key.lower(), hb_order_item[hb_order_item_key])
 
-@frappe.whitelist()
-def initiate_hepsiburada_orderitems():
-    os = HepsiburadaOrdersService()
-    orderitems = os.get_list_of_orderitems(None, None)
-    totalcount = orderitems["totalCount"]
-    meta = frappe.get_meta(os.doctype)
-    for item in orderitems["items"]:
+            hb_order_item_doc.save()
+            # check if sku exists among hepsiburada listings
+            if not frappe.db.exists({
+                "doctype": self.listing_doctype,
+                "hepsiburadasku": hb_order_item["sku"]
+            }):
+                ls = HepsiburadaListingsService()
+            # if sku does not exist, process all listings
+            if ls.process_listings():
+                hb_listing_doc = frappe.get_doc(self.listing_doctype,
+                                                filters={"hepsiburadasku": hb_order_item["sku"]})
+                item_doc = frappe.get_doc(self.item_doctype, filters={"item_code": hb_listing_doc.merchantsku})
+            else:
+                # should be error
+                pass
+
+            # check if order detail exists
+            if self.check_orders_detail_doctype(hb_order_item["orderNumber"]):
+                self.process_orders_details(hb_order_item["orderNumber"])
+            else:
+                # should be error
+                pass
+
+        return frappe.db.count(self.doctype, filters={
+            "merchantid": frappe.db.get_value(self.company_setting_doctype, self.company, "merchantid")}) == total_count
+
+    def process_orders_details(self, order_number):
+        hb_orders_detail = self.get_list_of_orders_details(order_number)
+        meta = frappe.get_meta(self.detail_doctype)
+        for hb_order_detail in hb_orders_detail:
+            if self.check_orders_detail_doctype(order_number):
+                hb_order_detail_doc = frappe.get_doc(self.detail_doctype, order_number)
+            else:
+                # should be error
+                pass
+            for hb_order_detail_key in hb_order_detail.keys():
+                if hb_order_detail_key == "customer":
+                    hbc = HepsiburadaCustomer(hb_order_detail[hb_order_detail_key], self.customer_type,
+                                              self.customer_tax_id)
+                    if hbc.use_customer():
+                        for key in hb_order_detail[hb_order_detail_key]:
+                            if meta.has_field((hb_order_detail_key + "_" + key).lower()):
+                                hb_order_detail_doc.db_set((hb_order_detail_key + "_" + key).lower(),
+                                                           hb_order_detail[hb_order_detail_key][key])
+                    customer_doc = frappe.get_doc(self.customer_doctype, filters={
+                        "customer_name": hb_order_detail[hb_order_detail_key]["name"]})
+                if hb_order_detail_key == "invoice":
+                    for key in hb_order_detail[hb_order_detail_key]:
+                        if meta.has_field((hb_order_detail_key + "_" + key).lower()):
+                            hb_order_detail_doc.db_set((hb_order_detail_key + "_" + key).lower(),
+                                                       hb_order_detail[hb_order_detail_key][key])
+                if hb_order_detail_key == "deliveryAddress":
+                    for key in hb_order_detail[hb_order_detail_key]:
+                        if meta.has_field((hb_order_detail_key + "_" + key).lower()):
+                            hb_order_detail_doc.db_set((hb_order_detail_key + "_" + key).lower(),
+                                                       hb_order_detail[hb_order_detail_key][key])
+
+    def check_order_item_doctype(self, filter_id):
         # check if record exists by filters
         if not frappe.db.exists({
-            "doctype": os.doctype,
-            "id": item["id"]
+            "doctype": self.doctype,
+            "id": filter_id
         }):
-            newdoc = frappe.new_doc(os.doctype)
-            newdoc.id = item["id"]
-            newdoc.insert()
+            new_hb_order_item_doc = frappe.new_doc(self.doctype)
+            new_hb_order_item_doc.id = filter_id
+            new_hb_order_item_doc.insert()
+        return frappe.db.exists({
+            "doctype": self.doctype,
+            "id": filter_id
+        })
 
-        frdoc = frappe.get_doc(os.doctype, item["id"])
-        customer_type = ""
-        customer_tax_id = ""
-        if item["lastStatusUpdateDate"] != frdoc.laststatusupdatedate:
-            for itemkey in item.keys():
-                if itemkey == "shippingAddress":
-                    sa = HepsiburadaAddress(item[itemkey], "Shipping")
-                    if sa.use_address():
-                        for key in ["addressId", "alternatePhoneNumber", "name"]:
-                            frdoc.db_set((itemkey + "_" + key).lower(), item[itemkey][key])
-                elif itemkey == "totalPrice" or \
-                        itemkey == "unitPrice" or \
-                        itemkey == "commission" or \
-                        itemkey == "cargoCompanyModel":
-                    for ikey in item[itemkey].keys():
-                        if meta.has_field((itemkey + "_" + ikey).lower()):
-                            frdoc.db_set((itemkey + "_" + ikey).lower(), item[itemkey][ikey])
-                elif itemkey == "hbDiscount":
-                    for ikey in item[itemkey].keys():
-                        if ikey == "totalPrice" or \
-                                ikey == "unitPrice":
-                            for skey in item[itemkey][ikey].keys():
-                                if meta.has_field((itemkey + "_" + ikey + "_" + skey).lower()):
-                                    frdoc.db_set(
-                                        (itemkey + "_" + ikey + "_" + skey).lower(), item[itemkey][ikey][skey])
-                elif itemkey == "invoice":
-                    for ikey in item[itemkey].keys():
-                        if ikey == "address":
-                            sa = HepsiburadaAddress(item[itemkey][ikey], "Billing")
-                            if sa.use_address():
-                                for key in ["addressId", "alternatePhoneNumber", "name"]:
-                                    frdoc.db_set((itemkey + "_" + ikey + "_" + key).lower(), item[itemkey][ikey][key])
-                        else:
-                            if meta.has_field((itemkey + "_" + ikey).lower()):
-                                frdoc.db_set((itemkey + "_" + ikey).lower(), item[itemkey][ikey])
-                        # post CRUD process inspection
-                        if ikey == "turkishIdentityNumber":
-                            if item[itemkey][ikey] != "" or item[itemkey][ikey] is not None:
-                                customer_type = "Individual"
-                                customer_tax_id = item[itemkey][ikey]
-                        if ikey == "taxNumber":
-                            if item[itemkey][ikey] != "" or item[itemkey][ikey] is not None:
-                                customer_type = "Company"
-                                customer_tax_id = item[itemkey][ikey]
-                else:
-                    if meta.has_field(itemkey.lower()):
-                        frdoc.db_set(itemkey.lower(), item[itemkey])
-
-            frdoc.save()
-
-            for orderdetail in os.get_list_of_orders_details(item["orderNumber"]):
-                for customerdetail in orderdetail["customer"]:
-                    # check if record exists by filters
-                    if not frappe.db.exists({
-                        "doctype": "Customer",
-                        "customer_name": customerdetail["name"]
-                    }):
-                        newdoc = frappe.new_doc("Customer")
-                        # required fields
-                        newdoc.customer_name = customerdetail["name"]
-                        newdoc.customer_type = customer_type
-                        newdoc.customer_group = frappe.db.get_value(os.company_setting_doctype, os.company,
-                                                                    "customer_group")
-                        newdoc.territory = frappe.db.get_value(os.company_setting_doctype, os.company, "territory")
-                        # optional fields
-                        newdoc.tax_id = customer_tax_id
-
-                        newdoc.insert()
-                    # insert customer data to hepsiburada doctype
-                    pass
-                customerdoc = frappe.get_doc("Customer", filters={"customer_name": orderdetail["customer"]["name"]})
-
-
-    return frappe.db.count("hepsiburada Order Item",
-                           filters={"merchantid": frappe.db.get_value(os.company_setting_doctype, os.company,
-                                                                      "merchantid")}) == totalcount
+    def check_orders_detail_doctype(self, filter_id):
+        # check if record exists by filters
+        if not frappe.db.exists({
+            "doctype": self.detail_doctype,
+            "id": filter_id
+        }):
+            new_hb_order_item_doc = frappe.new_doc(self.detail_doctype)
+            new_hb_order_item_doc.id = filter_id
+            new_hb_order_item_doc.insert()
+        return frappe.db.exists({
+            "doctype": self.doctype,
+            "id": filter_id
+        })
