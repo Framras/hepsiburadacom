@@ -45,10 +45,12 @@
     "commission_currency",
     "shippingaddress_section",
     "shippingaddress_addressid",
+    "column_break_40",
     "shippingaddress_alternatephonenumber",
     "shippingaddress_name",
     "invoiceaddress_section",
     "invoice_address_addressid",
+    "column_break_45",
     "invoice_address_alternatephonenumber",
     "invoice_address_name",
     "invoice_section",
@@ -576,25 +578,37 @@
     {
       "fieldname": "shippingaddress_alternatephonenumber",
       "fieldtype": "Data",
-      "label": "Alternate Phone Number"
+      "label": "Alternate Phone Number",
+      "read_only": 1
     },
     {
       "fieldname": "shippingaddress_name",
       "fieldtype": "Data",
-      "label": "Name"
+      "label": "Name",
+      "read_only": 1
     },
     {
       "fieldname": "invoice_address_alternatephonenumber",
       "fieldtype": "Data",
-      "label": "Alternate Phone Number"
+      "label": "Alternate Phone Number",
+      "read_only": 1
     },
     {
       "fieldname": "invoice_address_name",
       "fieldtype": "Data",
-      "label": "Name"
+      "label": "Name",
+      "read_only": 1
+    },
+    {
+      "fieldname": "column_break_40",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "column_break_45",
+      "fieldtype": "Column Break"
     }
   ],
-  "modified": "2019-11-24 23:11:13.061649",
+  "modified": "2019-11-25 13:43:28.813397",
   "modified_by": "Administrator",
   "module": "Hepsiburadacom",
   "name": "hepsiburada Order Item",

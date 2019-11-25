@@ -1,0 +1,159 @@
+{
+  "creation": "2019-11-25 13:39:38.171591",
+  "doctype": "DocType",
+  "editable_grid": 1,
+  "engine": "InnoDB",
+  "field_order": [
+    "orderid",
+    "ordernumber",
+    "column_break_3",
+    "paymentstatus",
+    "orderdate",
+    "createddate",
+    "section_break_7",
+    "customer_customerid",
+    "column_break_9",
+    "customer_name",
+    "section_break_11",
+    "invoice_turkishidentitynumber",
+    "invoice_taxnumber",
+    "invoice_taxoffice",
+    "column_break_15",
+    "invoice_address_addressid",
+    "invoice_address_name",
+    "invoice_address_alternatephonenumber",
+    "section_break_19",
+    "deliveryaddress_addressid",
+    "deliveryaddress_name",
+    "deliveryaddress_alternatephonenumber"
+  ],
+  "fields": [
+    {
+      "fieldname": "orderid",
+      "fieldtype": "Data",
+      "label": "Order Id"
+    },
+    {
+      "fieldname": "ordernumber",
+      "fieldtype": "Data",
+      "label": "Order Number"
+    },
+    {
+      "fieldname": "column_break_3",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "paymentstatus",
+      "fieldtype": "Data",
+      "label": "Payment Status"
+    },
+    {
+      "fieldname": "orderdate",
+      "fieldtype": "Data",
+      "label": "Order Date"
+    },
+    {
+      "fieldname": "createddate",
+      "fieldtype": "Data",
+      "label": "Created Date"
+    },
+    {
+      "fieldname": "section_break_7",
+      "fieldtype": "Section Break"
+    },
+    {
+      "fieldname": "customer_customerid",
+      "fieldtype": "Data",
+      "label": "Customer ID"
+    },
+    {
+      "fieldname": "column_break_9",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "customer_name",
+      "fieldtype": "Data",
+      "label": "CustomerName"
+    },
+    {
+      "fieldname": "section_break_11",
+      "fieldtype": "Section Break"
+    },
+    {
+      "fieldname": "invoice_turkishidentitynumber",
+      "fieldtype": "Data",
+      "label": "Turkish Identity Number"
+    },
+    {
+      "fieldname": "invoice_taxnumber",
+      "fieldtype": "Data",
+      "label": "Tax Number"
+    },
+    {
+      "fieldname": "invoice_taxoffice",
+      "fieldtype": "Data",
+      "label": "Tax Office"
+    },
+    {
+      "fieldname": "column_break_15",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "invoice_address_addressid",
+      "fieldtype": "Data",
+      "label": "Address ID"
+    },
+    {
+      "fieldname": "invoice_address_name",
+      "fieldtype": "Data",
+      "label": "Name"
+    },
+    {
+      "fieldname": "invoice_address_alternatephonenumber",
+      "fieldtype": "Data",
+      "label": "Alternate Phone Number"
+    },
+    {
+      "fieldname": "section_break_19",
+      "fieldtype": "Section Break"
+    },
+    {
+      "fieldname": "deliveryaddress_addressid",
+      "fieldtype": "Data",
+      "label": "Delivery Address ID"
+    },
+    {
+      "fieldname": "deliveryaddress_name",
+      "fieldtype": "Data",
+      "label": "Name"
+    },
+    {
+      "fieldname": "deliveryaddress_alternatephonenumber",
+      "fieldtype": "Data",
+      "label": "Alternate Phone Number"
+    }
+  ],
+  "modified": "2019-11-25 13:39:41.088779",
+  "modified_by": "Administrator",
+  "module": "Hepsiburadacom",
+  "name": "hepsiburada Order Detail",
+  "owner": "Administrator",
+  "permissions": [
+    {
+      "create": 1,
+      "delete": 1,
+      "email": 1,
+      "export": 1,
+      "print": 1,
+      "read": 1,
+      "report": 1,
+      "role": "System Manager",
+      "share": 1,
+      "write": 1
+    }
+  ],
+  "quick_entry": 1,
+  "sort_field": "modified",
+  "sort_order": "DESC",
+  "track_changes": 1
+}

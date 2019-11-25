@@ -6,16 +6,13 @@
   "engine": "InnoDB",
   "field_order": [
     "company",
-    "integration_warehouse",
-    "item_group",
-    "stock_uom",
-    "selling_price_list",
-    "column_break_3",
     "enable",
+    "column_break_3",
     "usetest",
     "integration_section",
     "username",
     "password",
+    "column_break_8",
     "merchantid",
     "integration_check_section",
     "check_integration",
@@ -30,7 +27,15 @@
     "section_break_20",
     "initiate_orderitems",
     "column_break_22",
-    "initiate_orderitemsresult"
+    "initiate_orderitemsresult",
+    "item_section",
+    "integration_warehouse",
+    "item_group",
+    "stock_uom",
+    "selling_price_list",
+    "column_break_29",
+    "customer_group",
+    "territory"
   ],
   "fields": [
     {
@@ -43,7 +48,7 @@
     {
       "fieldname": "integration_warehouse",
       "fieldtype": "Link",
-      "label": "Integration Warehouse",
+      "label": "Warehouse",
       "options": "Warehouse"
     },
     {
@@ -155,23 +160,48 @@
     {
       "fieldname": "item_group",
       "fieldtype": "Link",
-      "label": "Integration Default Item Group",
+      "label": "Item Group",
       "options": "Item Group"
     },
     {
       "fieldname": "stock_uom",
       "fieldtype": "Link",
-      "label": "Default Unit of Measure",
+      "label": "Unit of Measure",
       "options": "UOM"
     },
     {
       "fieldname": "selling_price_list",
       "fieldtype": "Link",
-      "label": "Default Price List",
+      "label": "Price List",
       "options": "Price List"
+    },
+    {
+      "fieldname": "item_section",
+      "fieldtype": "Section Break",
+      "label": "Integration Defaults"
+    },
+    {
+      "fieldname": "customer_group",
+      "fieldtype": "Link",
+      "label": "Customer Group",
+      "options": "Customer Group"
+    },
+    {
+      "fieldname": "territory",
+      "fieldtype": "Link",
+      "label": "Territory",
+      "options": "Territory"
+    },
+    {
+      "fieldname": "column_break_8",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "column_break_29",
+      "fieldtype": "Column Break"
     }
   ],
-  "modified": "2019-11-25 00:14:04.802673",
+  "modified": "2019-11-25 10:56:01.744156",
   "modified_by": "Administrator",
   "module": "Hepsiburadacom",
   "name": "hepsiburadacom Integration Company Setting",

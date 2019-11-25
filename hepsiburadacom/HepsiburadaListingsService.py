@@ -2,7 +2,7 @@ import frappe
 from hepsiburadacom.HepsiburadaConnection import HepsiburadaConnection
 
 
-class ListingsService:
+class HepsiburadaListingsService:
     def __init__(self):
         self.hepsiburadaconnection = HepsiburadaConnection()
         self.servicepath = "/listings"
@@ -33,7 +33,7 @@ class ListingsService:
 
 @frappe.whitelist()
 def initiate_hepsiburada_listings():
-    ls = ListingsService()
+    ls = HepsiburadaListingsService()
     listings = ls.get_list_of_listings(None, None)
     totalcount = listings["totalCount"]
     meta = frappe.get_meta(ls.doctype)
