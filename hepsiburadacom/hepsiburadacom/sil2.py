@@ -3,9 +3,9 @@ import requests
 from requests import HTTPError
 from requests.auth import HTTPBasicAuth
 
-username = 'framras_dev'
-password = 'Fr12345!'
-merchantid = '509778cf-7104-4c7f-850f-e14fdf5beb70'
+username = ''
+password = ''
+merchantid = ''
 ordernumber = '041241372'
 
 servicemethod = 'GET'
